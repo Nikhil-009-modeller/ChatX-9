@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <title>ChatX</title>
 
@@ -15,570 +15,413 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body{
+html,body{
   margin:0;
   width:100%;
   height:100%;
   overflow:hidden;
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
-  "SF Pro Text","Segoe UI",sans-serif;
-  color:#fff;
+  "SF Pro Text",Arial,sans-serif;
   background:#050505;
+  color:#fff;
 }
 
-button,
-input{
+button,input{
   font:inherit;
 }
 
 button{
   border:0;
+  color:#fff;
 }
 
-.hidden{
-  display:none!important;
-}
-
-/* =========================
-   BACKGROUND
-========================= */
-
-body{
+.app{
+  width:100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
   background:
-    radial-gradient(
-      circle at 10% 5%,
-      rgba(255,255,255,.08),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 90% 90%,
-      rgba(255,255,255,.06),
-      transparent 35%
-    ),
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,.08),transparent 30%),
+    radial-gradient(circle at 90% 80%,rgba(255,255,255,.06),transparent 35%),
     #050505;
 }
 
-/* =========================
-   GLASS
-========================= */
+/* LOGIN */
 
-.glass{
-  background:rgba(255,255,255,.075);
-  border:1px solid rgba(255,255,255,.11);
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.35),
-    inset 0 1px rgba(255,255,255,.055);
-  backdrop-filter:blur(30px);
-  -webkit-backdrop-filter:blur(30px);
-}
-
-/* =========================
-   LOADING
-========================= */
-
-#loading{
-  position:fixed;
+.loginScreen{
+  position:absolute;
   inset:0;
-  z-index:9999;
   display:flex;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
-  gap:12px;
-  background:#050505;
+  padding:24px;
+  z-index:50;
 }
 
-.loader{
-  width:32px;
-  height:32px;
-  border:3px solid rgba(255,255,255,.14);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
-}
-
-/* =========================
-   AUTH
-========================= */
-
-#authPage{
-  position:fixed;
-  inset:0;
-  z-index:500;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.authBox{
-  width:100%;
-  max-width:390px;
+.loginBox{
+  width:min(420px,100%);
   padding:28px;
   border-radius:32px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+  box-shadow:0 30px 100px rgba(0,0,0,.55);
 }
 
 .logo{
-  text-align:center;
-  font-size:38px;
-  font-weight:900;
-  letter-spacing:-2px;
-}
-
-.subtitle{
-  text-align:center;
-  color:#888;
-  font-size:13px;
-  margin:7px 0 28px;
-}
-
-.authTitle{
-  font-size:21px;
+  font-size:34px;
   font-weight:800;
-  margin-bottom:15px;
+  letter-spacing:-1.5px;
+  margin-bottom:5px;
+}
+
+.sub{
+  color:#aaa;
+  margin-bottom:25px;
 }
 
 .input{
   width:100%;
   height:52px;
-  padding:0 16px;
-  margin-bottom:12px;
   border-radius:17px;
-  outline:none;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.07);
   color:#fff;
-  background:rgba(255,255,255,.065);
-  border:1px solid rgba(255,255,255,.11);
-}
-
-.input::placeholder{
-  color:#777;
+  padding:0 16px;
+  outline:none;
+  margin-bottom:12px;
 }
 
 .input:focus{
-  border-color:rgba(255,255,255,.3);
+  border-color:rgba(255,255,255,.35);
 }
 
-.btn{
+.primaryBtn{
   width:100%;
   height:52px;
   border-radius:17px;
-  cursor:pointer;
   background:#fff;
   color:#000;
-  font-weight:750;
+  font-weight:700;
+  margin-top:5px;
 }
 
-.btn.secondary{
-  color:#fff;
-  background:rgba(255,255,255,.075);
-  border:1px solid rgba(255,255,255,.1);
+.secondaryBtn{
+  width:100%;
+  height:48px;
+  margin-top:10px;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
 }
 
-.authSwitch{
-  margin-top:18px;
-  text-align:center;
-  color:#777;
-  font-size:13px;
+/* MAIN */
+
+.mainShell{
+  position:absolute;
+  inset:0;
+  display:none;
+  transition:
+    transform .42s cubic-bezier(.22,.8,.25,1),
+    width .42s cubic-bezier(.22,.8,.25,1);
 }
 
-.authSwitch span{
-  color:#fff;
+.mainShell.drawerOpen{
+  transform:scale(.91) translateX(-3%);
+}
+
+.topbar{
+  height:80px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 18px 8px;
+}
+
+.title{
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.profileMini{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   font-weight:700;
   cursor:pointer;
 }
 
-.errorBox{
-  display:none;
-  padding:11px 13px;
-  margin-bottom:12px;
-  border-radius:13px;
-  color:#ff9292;
-  background:rgba(255,60,60,.1);
-  border:1px solid rgba(255,60,60,.18);
-  font-size:13px;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-#mainShell{
-  position:fixed;
-  inset:0;
-  transition:
-    transform .45s cubic-bezier(.22,1,.36,1);
-}
-
-#mainShell.chatOpen{
-  transform:
-    translateX(-8%)
-    scale(.91);
-}
-
-/* =========================
-   HEADER
-========================= */
-
-.header{
-  height:88px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:18px 20px;
-}
-
-.brand{
-  font-size:26px;
-  font-weight:900;
-  letter-spacing:-1px;
-}
-
-.headerProfile{
-  width:43px;
-  height:43px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  color:#fff;
-  cursor:pointer;
-  font-weight:800;
-}
-
-/* =========================
-   PAGE
-========================= */
-
 .page{
   position:absolute;
-  top:88px;
-  left:0;
-  right:0;
-  bottom:94px;
-  padding:0 18px 20px;
-  overflow-y:auto;
-  scrollbar-width:none;
+  inset:80px 0 85px;
+  overflow:auto;
+  padding:10px 17px 30px;
 }
 
 .page::-webkit-scrollbar{
   display:none;
 }
 
-/* =========================
-   HOME
-========================= */
+/* SEARCH */
 
-.welcome{
-  margin:8px 0 19px;
-}
-
-.welcome h1{
-  margin:0;
-  font-size:31px;
-  line-height:1.05;
-  letter-spacing:-1.3px;
-}
-
-.welcome p{
-  margin:7px 0 0;
-  color:#888;
-  font-size:14px;
-}
-
-.searchBox{
+.search{
   width:100%;
-  height:51px;
-  padding:0 16px;
-  outline:none;
-  color:#fff;
+  height:50px;
   border-radius:18px;
-  background:rgba(255,255,255,.065);
   border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.065);
+  color:#fff;
+  outline:none;
+  padding:0 17px;
+  margin-bottom:16px;
 }
 
-.searchBox::placeholder{
-  color:#777;
-}
-
-.sectionTitle{
-  margin:19px 4px 10px;
-  color:#777;
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
+/* CARDS */
 
 .userCard{
-  width:100%;
-  min-height:75px;
   display:flex;
   align-items:center;
   gap:13px;
-  padding:12px;
-  margin-bottom:9px;
-  border-radius:21px;
+  padding:14px;
+  margin-bottom:10px;
+  border-radius:22px;
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
   cursor:pointer;
-  transition:transform .15s ease;
-}
-
-.userCard:active{
-  transform:scale(.98);
 }
 
 .avatar{
-  width:49px;
-  height:49px;
-  flex-shrink:0;
+  width:48px;
+  height:48px;
+  flex:0 0 48px;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:50%;
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.22),
+    rgba(255,255,255,.06)
+  );
+  border:1px solid rgba(255,255,255,.13);
   font-weight:800;
-  background:linear-gradient(145deg,#4d4d4d,#111);
-  border:1px solid rgba(255,255,255,.14);
 }
 
 .userInfo{
-  flex:1;
   min-width:0;
 }
 
-.username{
-  font-size:15px;
-  font-weight:750;
-  white-space:nowrap;
+.userName{
+  font-weight:700;
+  font-size:16px;
+}
+
+.userEmail{
+  color:#8d8d8d;
+  font-size:13px;
+  margin-top:3px;
   overflow:hidden;
   text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-.userStatus{
-  margin-top:4px;
-  color:#777;
-  font-size:12px;
-}
+/* PROFILE */
 
-/* =========================
-   PROFILE
-========================= */
-
-.profileBox{
-  width:100%;
-  padding:30px 20px;
-  border-radius:30px;
+.profilePage{
   text-align:center;
 }
 
 .bigAvatar{
-  width:94px;
-  height:94px;
-  margin:0 auto 16px;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin:15px auto;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:50%;
-  font-size:32px;
-  font-weight:850;
-  background:linear-gradient(145deg,#555,#101010);
-  border:1px solid rgba(255,255,255,.16);
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.4),
-    inset 0 1px rgba(255,255,255,.13);
+  font-size:30px;
+  font-weight:800;
+  background:linear-gradient(
+    145deg,
+    rgba(255,255,255,.2),
+    rgba(255,255,255,.05)
+  );
+  border:1px solid rgba(255,255,255,.15);
 }
 
 .profileName{
-  font-size:24px;
-  font-weight:850;
-  word-break:break-word;
+  font-size:23px;
+  font-weight:800;
 }
 
 .profileEmail{
-  margin-top:6px;
   color:#888;
-  font-size:13px;
-  word-break:break-all;
+  margin-top:4px;
 }
 
-.profileLine{
-  height:1px;
-  margin:24px 0 10px;
-  background:rgba(255,255,255,.08);
+.profileRows{
+  margin-top:25px;
+  text-align:left;
 }
 
 .profileRow{
-  min-height:50px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  color:#888;
-  font-size:14px;
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:9px;
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.08);
 }
 
-.profileRow strong{
-  max-width:60%;
-  color:#fff;
-  font-weight:650;
-  text-align:right;
-  word-break:break-word;
+.rowLabel{
+  font-size:12px;
+  color:#888;
+  margin-bottom:5px;
+}
+
+.rowValue{
+  font-size:15px;
 }
 
 .logout{
-  margin-top:18px;
+  width:100%;
+  height:50px;
+  margin-top:12px;
+  border-radius:17px;
+  background:rgba(255,70,70,.14);
+  color:#ff8585;
 }
 
-/* =========================
-   NAVIGATION
-========================= */
+/* BOTTOM NAV */
 
 .bottomNav{
   position:absolute;
   left:15px;
   right:15px;
-  bottom:15px;
-  height:65px;
-  padding:5px;
+  bottom:13px;
+  height:64px;
+  border-radius:25px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
   display:flex;
   align-items:center;
-  border-radius:26px;
-  z-index:50;
+  padding:5px;
+}
+
+.navPill{
+  position:absolute;
+  height:54px;
+  width:calc((100% - 10px)/3);
+  border-radius:20px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.08);
+  transition:left .38s cubic-bezier(.22,.8,.25,1);
 }
 
 .navItem{
   position:relative;
   z-index:2;
   flex:1;
-  height:55px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:20px;
-  color:#777;
-  font-size:12px;
-  font-weight:700;
-  cursor:pointer;
+  height:54px;
+  background:transparent;
+  color:#999;
+  font-size:13px;
+  font-weight:650;
 }
 
 .navItem.active{
   color:#fff;
 }
 
-.navPill{
+/* OVERLAY */
+
+.overlay{
   position:absolute;
-  top:5px;
-  left:5px;
-  width:calc((100% - 10px) / 3);
-  height:55px;
-  border-radius:20px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.08);
-  transition:left .4s cubic-bezier(.22,1,.36,1);
-}
-
-/* =========================
-   CHAT
-========================= */
-
-#chatOverlay{
-  position:fixed;
   inset:0;
-  z-index:100;
+  background:rgba(0,0,0,.35);
   opacity:0;
   pointer-events:none;
-  background:rgba(0,0,0,.35);
-  transition:opacity .4s ease;
+  transition:opacity .35s;
+  z-index:15;
 }
 
-#chatOverlay.show{
+.overlay.show{
   opacity:1;
   pointer-events:auto;
 }
 
-#chatDrawer{
-  position:fixed;
+/* CHAT DRAWER */
+
+.chatDrawer{
+  position:absolute;
   top:0;
   right:0;
-  bottom:0;
-  width:min(430px,94vw);
-  z-index:200;
-  display:flex;
-  flex-direction:column;
-  background:rgba(20,20,20,.68);
-  border-left:1px solid rgba(255,255,255,.11);
-  box-shadow:-30px 0 70px rgba(0,0,0,.45);
+  width:min(94%,460px);
+  height:100%;
+  z-index:20;
+  transform:translateX(105%);
+  transition:transform .42s cubic-bezier(.22,.8,.25,1);
+  background:rgba(18,18,18,.70);
+  border-left:1px solid rgba(255,255,255,.13);
   backdrop-filter:blur(35px);
   -webkit-backdrop-filter:blur(35px);
-  transform:translateX(105%);
-  transition:transform .45s cubic-bezier(.22,1,.36,1);
+  display:flex;
+  flex-direction:column;
 }
 
-#chatDrawer.open{
+.chatDrawer.open{
   transform:translateX(0);
 }
 
 .chatHeader{
-  height:83px;
-  flex-shrink:0;
+  height:82px;
+  flex:0 0 82px;
   display:flex;
   align-items:center;
   gap:12px;
-  padding:15px 17px;
+  padding:15px;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.chatClose{
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.backBtn{
+  width:42px;
+  height:42px;
   border-radius:50%;
-  color:#fff;
   background:rgba(255,255,255,.08);
-  cursor:pointer;
-  font-size:22px;
+  font-size:21px;
 }
 
-.chatAvatar{
-  width:43px;
-  height:43px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  font-weight:800;
-  background:linear-gradient(145deg,#555,#111);
-}
-
-.chatInfo{
-  min-width:0;
+.chatUser{
   flex:1;
 }
 
-.chatName{
+.chatUserName{
   font-weight:800;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  font-size:17px;
 }
 
 .chatStatus{
-  margin-top:3px;
   color:#777;
-  font-size:11px;
+  font-size:12px;
+  margin-top:3px;
 }
 
 .messages{
   flex:1;
   overflow-y:auto;
-  padding:18px 15px 12px;
-  scrollbar-width:none;
+  padding:18px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
   touch-action:pan-y;
 }
 
@@ -586,180 +429,136 @@ body{
   display:none;
 }
 
-.emptyChat{
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#666;
-  font-size:13px;
-  padding:30px;
-}
-
-.messageRow{
-  display:flex;
-  margin-bottom:9px;
-}
-
-.messageRow.mine{
-  justify-content:flex-end;
-}
-
-.messageBubble{
+.msg{
   max-width:78%;
   padding:10px 13px;
   border-radius:18px;
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.07);
-  font-size:14px;
   line-height:1.35;
+  font-size:15px;
   word-break:break-word;
 }
 
-.messageRow.mine .messageBubble{
-  color:#000;
+.msg.mine{
+  align-self:flex-end;
   background:#fff;
+  color:#000;
   border-bottom-right-radius:5px;
 }
 
-.messageRow:not(.mine) .messageBubble{
+.msg.theirs{
+  align-self:flex-start;
+  background:rgba(255,255,255,.11);
+  border:1px solid rgba(255,255,255,.08);
   border-bottom-left-radius:5px;
 }
 
-.messageTime{
-  margin-top:4px;
-  opacity:.5;
-  text-align:right;
-  font-size:9px;
-}
-
 .composer{
-  flex-shrink:0;
+  flex:0 0 auto;
+  padding:10px 12px 14px;
   display:flex;
   gap:8px;
-  padding:10px 12px 13px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-
-.attachBtn,
-.sendBtn{
-  width:47px;
-  height:48px;
-  flex-shrink:0;
-  border-radius:16px;
-  cursor:pointer;
-}
-
-.attachBtn{
-  color:#fff;
-  background:rgba(255,255,255,.08);
-}
-
-.sendBtn{
-  color:#000;
-  background:#fff;
-  font-weight:900;
+  background:rgba(0,0,0,.15);
 }
 
 .messageInput{
-  min-width:0;
   flex:1;
+  min-width:0;
   height:48px;
-  padding:0 14px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
   outline:none;
-  border:0;
-  color:#fff;
-  border-radius:16px;
   background:rgba(255,255,255,.08);
+  color:#fff;
+  padding:0 15px;
 }
 
-.messageInput::placeholder{
-  color:#777;
+.sendBtn{
+  width:50px;
+  height:48px;
+  border-radius:18px;
+  background:#fff;
+  color:#000;
+  font-weight:800;
+  font-size:18px;
 }
 
-/* =========================
-   RIGHT EDGE
-========================= */
+.attachBtn{
+  width:45px;
+  height:48px;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  font-size:19px;
+}
 
-#edgeZone{
-  position:fixed;
+/* EDGE ZONE */
+
+.edgeZone{
+  position:absolute;
   top:0;
   right:0;
-  bottom:0;
-  width:60px;
-  z-index:90;
+  width:68px;
+  height:100%;
+  z-index:12;
   touch-action:none;
 }
 
-/* =========================
-   TOAST
-========================= */
+/* TOAST */
 
-#toast{
-  position:fixed;
+.toast{
+  position:absolute;
   left:50%;
-  bottom:92px;
-  z-index:1000;
+  bottom:95px;
+  transform:translateX(-50%) translateY(15px);
+  padding:11px 16px;
+  border-radius:15px;
+  background:rgba(25,25,25,.9);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  font-size:13px;
   opacity:0;
   pointer-events:none;
-  transform:translate(-50%,15px);
-  padding:10px 15px;
-  border-radius:16px;
-  color:#fff;
-  background:rgba(30,30,30,.9);
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  font-size:12px;
-  white-space:nowrap;
-  transition:
-    opacity .25s ease,
-    transform .25s ease;
+  transition:.25s;
+  z-index:100;
+  max-width:85%;
+  text-align:center;
 }
 
-#toast.show{
+.toast.show{
   opacity:1;
-  transform:translate(-50%,0);
+  transform:translateX(-50%) translateY(0);
+}
+
+/* HIDDEN */
+
+.hidden{
+  display:none!important;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
-<div id="loading">
-  <div class="loader"></div>
-  <div style="color:#777;font-size:12px;">
-    Loading ChatX...
-  </div>
-</div>
+<div class="app">
 
+  <!-- LOGIN -->
 
-<!-- AUTH -->
-<section id="authPage" class="hidden">
+  <section id="loginScreen" class="loginScreen">
 
-  <div class="authBox glass">
+    <div class="loginBox">
 
-    <div class="logo">ChatX</div>
-
-    <div class="subtitle">
-      Private • Simple • Fast
-    </div>
-
-
-    <!-- LOGIN -->
-
-    <div id="loginForm">
-
-      <div class="authTitle">
-        Welcome back
-      </div>
-
-      <div id="loginError" class="errorBox"></div>
+      <div class="logo">ChatX</div>
+      <div class="sub">Private messaging, simplified.</div>
 
       <input
-        id="loginEmail"
+        id="usernameInput"
+        class="input"
+        type="text"
+        placeholder="Username"
+        autocomplete="username"
+      >
+
+      <input
+        id="emailInput"
         class="input"
         type="email"
         placeholder="Email"
@@ -767,341 +566,218 @@ body{
       >
 
       <input
-        id="loginPassword"
+        id="passwordInput"
         class="input"
         type="password"
         placeholder="Password"
         autocomplete="current-password"
       >
 
-      <button id="loginBtn" class="btn">
+      <button id="loginBtn" class="primaryBtn">
         Login
       </button>
 
-      <div class="authSwitch">
-        Don't have an account?
-        <span id="showSignup">
-          Create account
-        </span>
-      </div>
-
-    </div>
-
-
-    <!-- SIGNUP -->
-
-    <div id="signupForm" class="hidden">
-
-      <div class="authTitle">
-        Create account
-      </div>
-
-      <div id="signupError" class="errorBox"></div>
-
-      <input
-        id="signupUsername"
-        class="input"
-        type="text"
-        placeholder="Username"
-        maxlength="30"
-      >
-
-      <input
-        id="signupEmail"
-        class="input"
-        type="email"
-        placeholder="Email"
-        autocomplete="email"
-      >
-
-      <input
-        id="signupPassword"
-        class="input"
-        type="password"
-        placeholder="Password"
-        autocomplete="new-password"
-      >
-
-      <button id="signupBtn" class="btn">
-        Create account
+      <button id="signupBtn" class="secondaryBtn">
+        Create Account
       </button>
 
-      <div class="authSwitch">
-        Already have an account?
-        <span id="showLogin">
-          Login
-        </span>
+    </div>
+
+  </section>
+
+
+  <!-- MAIN APP -->
+
+  <main id="mainShell" class="mainShell">
+
+    <header class="topbar">
+
+      <div id="pageTitle" class="title">
+        Home
       </div>
 
-    </div>
+      <button id="profileMini" class="profileMini">
+        ?
+      </button>
 
-  </div>
-
-</section>
-
-
-<!-- MAIN -->
-
-<div id="mainShell" class="hidden">
-
-  <!-- HEADER -->
-
-  <header class="header">
-
-    <div class="brand">
-      ChatX
-    </div>
-
-    <button
-      id="headerProfileBtn"
-      class="headerProfile glass"
-    >
-      <span id="headerAvatar">U</span>
-    </button>
-
-  </header>
+    </header>
 
 
-  <!-- HOME -->
+    <!-- HOME -->
 
-  <main id="homePage" class="page">
+    <section id="homePage" class="page">
 
-    <div class="welcome">
-
-      <h1 id="helloText">
-        Hello 👋
-      </h1>
-
-      <p>
-        Find someone and start chatting.
-      </p>
-
-    </div>
-
-
-    <input
-      id="searchInput"
-      class="searchBox"
-      type="text"
-      placeholder="Search username..."
-      autocomplete="off"
-    >
-
-
-    <div class="sectionTitle">
-      People
-    </div>
-
-
-    <div id="usersList"></div>
-
-  </main>
-
-
-  <!-- PROFILE -->
-
-  <main id="profilePage" class="page hidden">
-
-    <div class="profileBox glass">
-
-      <div
-        id="profileAvatar"
-        class="bigAvatar"
+      <input
+        id="searchInput"
+        class="search"
+        type="search"
+        placeholder="Search users..."
       >
-        U
+
+      <div id="usersList"></div>
+
+    </section>
+
+
+    <!-- PROFILE -->
+
+    <section id="profilePage" class="page profilePage hidden">
+
+      <div id="bigAvatar" class="bigAvatar">
+        ?
       </div>
 
-
-      <div
-        id="profileUsername"
-        class="profileName"
-      >
+      <div id="profileName" class="profileName">
         User
       </div>
 
-
-      <div
-        id="profileEmail"
-        class="profileEmail"
-      >
+      <div id="profileEmail" class="profileEmail">
         -
       </div>
 
+      <div class="profileRows">
 
-      <div class="profileLine"></div>
+        <div class="profileRow">
+          <div class="rowLabel">Username</div>
+          <div id="profileUsernameRow" class="rowValue">-</div>
+        </div>
 
+        <div class="profileRow">
+          <div class="rowLabel">Email</div>
+          <div id="profileEmailRow" class="rowValue">-</div>
+        </div>
 
-      <div class="profileRow">
-        <span>Username</span>
-        <strong id="profileUsernameRow">
-          -
-        </strong>
+        <div class="profileRow">
+          <div class="rowLabel">Account</div>
+          <div class="rowValue">ChatX Member</div>
+        </div>
+
       </div>
 
-
-      <div class="profileRow">
-        <span>Email</span>
-        <strong id="profileEmailRow">
-          -
-        </strong>
-      </div>
-
-
-      <div class="profileRow">
-        <span>Status</span>
-        <strong>
-          Active
-        </strong>
-      </div>
-
-
-      <button
-        id="logoutBtn"
-        class="btn secondary logout"
-      >
+      <button id="logoutBtn" class="logout">
         Logout
       </button>
 
-    </div>
+    </section>
+
+
+    <!-- NAV -->
+
+    <nav class="bottomNav">
+
+      <div id="navPill" class="navPill"></div>
+
+      <button
+        id="navHome"
+        class="navItem active"
+      >
+        Home
+      </button>
+
+      <button
+        id="navChat"
+        class="navItem"
+      >
+        Chat
+      </button>
+
+      <button
+        id="navProfile"
+        class="navItem"
+      >
+        Profile
+      </button>
+
+    </nav>
 
   </main>
 
 
-  <!-- BOTTOM NAV -->
+  <!-- BACKDROP -->
 
-  <nav class="bottomNav glass">
-
-    <div id="navPill" class="navPill"></div>
+  <div id="overlay" class="overlay"></div>
 
 
-    <div
-      class="navItem active"
-      data-page="home"
-    >
-      ⌂&nbsp; Home
+  <!-- CHAT DRAWER -->
+
+  <aside id="chatDrawer" class="chatDrawer">
+
+    <header class="chatHeader">
+
+      <button id="backChatBtn" class="backBtn">
+        ‹
+      </button>
+
+      <div class="avatar" id="chatAvatar">
+        ?
+      </div>
+
+      <div class="chatUser">
+
+        <div id="chatUserName" class="chatUserName">
+          Chat
+        </div>
+
+        <div class="chatStatus">
+          Messages
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <div id="messages" class="messages"></div>
+
+
+    <div class="composer">
+
+      <button
+        id="attachBtn"
+        class="attachBtn"
+        type="button"
+      >
+        +
+      </button>
+
+      <input
+        id="messageInput"
+        class="messageInput"
+        type="text"
+        placeholder="Message..."
+        autocomplete="off"
+      >
+
+      <button
+        id="sendBtn"
+        class="sendBtn"
+        type="button"
+      >
+        ↑
+      </button>
+
     </div>
 
-
-    <div
-      class="navItem"
-      data-page="chat"
-    >
-      ◉&nbsp; Chat
-    </div>
+  </aside>
 
 
-    <div
-      class="navItem"
-      data-page="profile"
-    >
-      ●&nbsp; Profile
-    </div>
+  <!-- RIGHT EDGE SWIPE AREA -->
 
-  </nav>
+  <div id="edgeZone" class="edgeZone"></div>
+
+
+  <!-- TOAST -->
+
+  <div id="toast" class="toast"></div>
 
 </div>
 
 
-<!-- CHAT OVERLAY -->
-
-<div id="chatOverlay"></div>
-
-
-<!-- CHAT DRAWER -->
-
-<aside id="chatDrawer">
-
-  <div class="chatHeader">
-
-    <button
-      id="chatCloseBtn"
-      class="chatClose"
-    >
-      ‹
-    </button>
-
-
-    <div
-      id="chatAvatar"
-      class="chatAvatar"
-    >
-      U
-    </div>
-
-
-    <div class="chatInfo">
-
-      <div
-        id="chatName"
-        class="chatName"
-      >
-        User
-      </div>
-
-      <div class="chatStatus">
-        ChatX user
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div
-    id="messages"
-    class="messages"
-  >
-    <div class="emptyChat">
-      Select a user and swipe from the right edge ←
-    </div>
-  </div>
-
-
-  <div class="composer">
-
-    <button
-      id="attachBtn"
-      class="attachBtn"
-    >
-      ＋
-    </button>
-
-
-    <input
-      id="messageInput"
-      class="messageInput"
-      type="text"
-      placeholder="Message..."
-      autocomplete="off"
-    >
-
-
-    <button
-      id="sendBtn"
-      class="sendBtn"
-    >
-      ↑
-    </button>
-
-  </div>
-
-</aside>
-
-
-<!-- EDGE SWIPE -->
-
-<div id="edgeZone"></div>
-
-
-<!-- TOAST -->
-
-<div id="toast"></div>
-
-
 <script>
-/* =========================================================
+
+/* =========================================
    SUPABASE
-========================================================= */
+========================================= */
 
 const SUPABASE_URL =
   "https://ktzlnjehfbjzrqtgwxee.supabase.co";
@@ -1116,48 +792,50 @@ const db =
   );
 
 
-/* =========================================================
+/* =========================================
    STATE
-========================================================= */
+========================================= */
 
 let currentUser = null;
 let currentProfile = null;
 let selectedUser = null;
 let realtimeChannel = null;
-
 let currentPage = "home";
 
-const renderedMessageIds =
-  new Set();
+let drawerStartX = 0;
+let drawerDragging = false;
+
+let edgeStartX = 0;
+let edgeDragging = false;
 
 
-/* =========================================================
-   DOM
-========================================================= */
+/* =========================================
+   ELEMENTS
+========================================= */
 
-const loading =
-  document.getElementById("loading");
-
-const authPage =
-  document.getElementById("authPage");
+const loginScreen =
+  document.getElementById("loginScreen");
 
 const mainShell =
   document.getElementById("mainShell");
 
-const loginForm =
-  document.getElementById("loginForm");
+const usernameInput =
+  document.getElementById("usernameInput");
 
-const signupForm =
-  document.getElementById("signupForm");
+const emailInput =
+  document.getElementById("emailInput");
 
-const homePage =
-  document.getElementById("homePage");
+const passwordInput =
+  document.getElementById("passwordInput");
 
-const profilePage =
-  document.getElementById("profilePage");
+const loginBtn =
+  document.getElementById("loginBtn");
 
-const navPill =
-  document.getElementById("navPill");
+const signupBtn =
+  document.getElementById("signupBtn");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
 
 const usersList =
   document.getElementById("usersList");
@@ -1165,296 +843,258 @@ const usersList =
 const searchInput =
   document.getElementById("searchInput");
 
+const profileMini =
+  document.getElementById("profileMini");
+
+const navPill =
+  document.getElementById("navPill");
+
+const navHome =
+  document.getElementById("navHome");
+
+const navChat =
+  document.getElementById("navChat");
+
+const navProfile =
+  document.getElementById("navProfile");
+
+const homePage =
+  document.getElementById("homePage");
+
+const profilePage =
+  document.getElementById("profilePage");
+
+const pageTitle =
+  document.getElementById("pageTitle");
+
+const overlay =
+  document.getElementById("overlay");
+
 const chatDrawer =
   document.getElementById("chatDrawer");
 
-const chatOverlay =
-  document.getElementById("chatOverlay");
+const edgeZone =
+  document.getElementById("edgeZone");
 
-const messagesBox =
+const backChatBtn =
+  document.getElementById("backChatBtn");
+
+const chatAvatar =
+  document.getElementById("chatAvatar");
+
+const chatUserName =
+  document.getElementById("chatUserName");
+
+const messages =
   document.getElementById("messages");
 
 const messageInput =
   document.getElementById("messageInput");
 
-const edgeZone =
-  document.getElementById("edgeZone");
+const sendBtn =
+  document.getElementById("sendBtn");
+
+const attachBtn =
+  document.getElementById("attachBtn");
 
 const toast =
   document.getElementById("toast");
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
+/* =========================================
+   TOAST
+========================================= */
 
-function initial(name){
+let toastTimer;
 
-  const text =
-    String(name || "U").trim();
+function toastMessage(text){
 
-  return (
-    text.charAt(0).toUpperCase() ||
-    "U"
-  );
-}
-
-
-function toastMessage(message){
-
-  toast.textContent = message;
+  toast.textContent = text;
 
   toast.classList.add("show");
 
-  clearTimeout(
-    toastMessage.timer
-  );
+  clearTimeout(toastTimer);
 
-  toastMessage.timer =
-    setTimeout(()=>{
-      toast.classList.remove("show");
-    },2200);
+  toastTimer = setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  },2500);
 }
 
 
-function clearErrors(){
-
-  document
-    .querySelectorAll(".errorBox")
-    .forEach(box=>{
-      box.textContent = "";
-      box.style.display = "none";
-    });
-
-}
-
-
-function errorMessage(id,message){
-
-  const box =
-    document.getElementById(id);
-
-  box.textContent = message;
-  box.style.display = "block";
-
-}
-
-
-/* =========================================================
+/* =========================================
    PROFILE
-========================================================= */
+========================================= */
 
-async function saveProfile(
-  user,
-  username
-){
+function getInitial(name){
 
-  const clean =
-    String(username || "").trim();
+  if(!name) return "?";
 
-  if(!clean){
-    return false;
-  }
-
-
-  const {error} =
-    await db
-      .from("profiles")
-      .upsert(
-        {
-          id:user.id,
-          username:clean
-        },
-        {
-          onConflict:"id"
-        }
-      );
-
-
-  if(error){
-
-    console.error(
-      "saveProfile:",
-      error
-    );
-
-    return false;
-  }
-
-
-  return true;
+  return name
+    .trim()
+    .charAt(0)
+    .toUpperCase();
 }
 
 
-async function loadProfile(user){
+async function loadProfile(){
 
-  const {data,error} =
-    await db
-      .from("profiles")
-      .select("id,username")
-      .eq("id",user.id)
-      .maybeSingle();
+  if(!currentUser) return;
 
+  const { data,error } = await db
+    .from("profiles")
+    .select("*")
+    .eq("id",currentUser.id)
+    .maybeSingle();
 
   if(error){
 
-    console.error(
-      "loadProfile:",
-      error
-    );
+    console.error("PROFILE LOAD ERROR:",error);
 
   }
-
 
   if(data){
 
     currentProfile = data;
 
-    return data;
+  }else{
+
+    const username =
+      currentUser.user_metadata?.username ||
+      currentUser.email?.split("@")[0] ||
+      "User";
+
+    const { data:newProfile,error:createError } =
+      await db
+        .from("profiles")
+        .upsert({
+          id:currentUser.id,
+          username:username
+        })
+        .select()
+        .maybeSingle();
+
+    if(createError){
+
+      console.error(
+        "PROFILE CREATE ERROR:",
+        createError
+      );
+
+      currentProfile = {
+        id:currentUser.id,
+        username:username
+      };
+
+    }else{
+
+      currentProfile = newProfile;
+
+    }
+
   }
 
-
-  const username =
-    user.user_metadata?.username ||
-    "User";
-
-
-  await saveProfile(
-    user,
-    username
-  );
-
-
-  currentProfile = {
-    id:user.id,
-    username:username
-  };
-
-
-  return currentProfile;
+  updateProfileUI();
 }
 
 
 function updateProfileUI(){
 
+  if(!currentUser) return;
+
   const username =
     currentProfile?.username ||
-    currentUser?.user_metadata?.username ||
+    currentUser.user_metadata?.username ||
+    currentUser.email?.split("@")[0] ||
     "User";
 
-  const email =
-    currentUser?.email ||
-    "-";
+  const initial = getInitial(username);
 
+  profileMini.textContent = initial;
 
-  document.getElementById(
-    "helloText"
-  ).textContent =
-    "Hello, " + username + " 👋";
+  document.getElementById("bigAvatar").textContent =
+    initial;
 
-
-  document.getElementById(
-    "profileUsername"
-  ).textContent =
+  document.getElementById("profileName").textContent =
     username;
 
+  document.getElementById("profileEmail").textContent =
+    currentUser.email || "-";
 
-  document.getElementById(
-    "profileEmail"
-  ).textContent =
-    email;
-
-
-  document.getElementById(
-    "profileUsernameRow"
-  ).textContent =
+  document.getElementById("profileUsernameRow").textContent =
     username;
 
-
-  document.getElementById(
-    "profileEmailRow"
-  ).textContent =
-    email;
-
-
-  document.getElementById(
-    "profileAvatar"
-  ).textContent =
-    initial(username);
-
-
-  document.getElementById(
-    "headerAvatar"
-  ).textContent =
-    initial(username);
+  document.getElementById("profileEmailRow").textContent =
+    currentUser.email || "-";
 
 }
 
 
-/* =========================================================
-   AUTH
-========================================================= */
+/* =========================================
+   ENTER APP
+========================================= */
+
+async function enterApp(){
+
+  loginScreen.classList.add("hidden");
+
+  mainShell.style.display = "block";
+
+  await loadProfile();
+
+  await loadUsers();
+
+  showPage("home");
+}
+
+
+/* =========================================
+   SIGNUP
+========================================= */
 
 async function signup(){
 
-  clearErrors();
-
-
   const username =
-    document
-      .getElementById("signupUsername")
-      .value
-      .trim();
+    usernameInput.value.trim();
 
   const email =
-    document
-      .getElementById("signupEmail")
-      .value
-      .trim();
+    emailInput.value.trim();
 
   const password =
-    document
-      .getElementById("signupPassword")
-      .value;
+    passwordInput.value;
 
+  if(!username){
 
-  if(username.length < 3){
-
-    errorMessage(
-      "signupError",
-      "Username must be at least 3 characters."
-    );
+    toastMessage("Enter username");
 
     return;
   }
-
 
   if(!email){
 
-    errorMessage(
-      "signupError",
-      "Enter your email."
-    );
+    toastMessage("Enter email");
 
     return;
   }
 
+  if(!password){
+
+    toastMessage("Enter password");
+
+    return;
+  }
 
   if(password.length < 6){
 
-    errorMessage(
-      "signupError",
-      "Password must be at least 6 characters."
-    );
+    toastMessage("Password must be 6+ characters");
 
     return;
   }
 
+  signupBtn.disabled = true;
 
-  const {
-    data,
-    error
-  } =
+  const { data,error } =
     await db.auth.signUp({
 
       email:email,
@@ -1469,37 +1109,50 @@ async function signup(){
 
     });
 
+  signupBtn.disabled = false;
 
   if(error){
 
-    errorMessage(
-      "signupError",
-      error.message
-    );
+    console.error("SIGNUP ERROR:",error);
+
+    toastMessage(error.message);
 
     return;
   }
 
+  if(data.user){
 
-  if(data.session && data.user){
+    const { error:profileError } =
+      await db
+        .from("profiles")
+        .upsert({
+          id:data.user.id,
+          username:username
+        });
 
-    await saveProfile(
-      data.user,
-      username
-    );
+    if(profileError){
 
-    await enterApp(
-      data.user
-    );
+      console.error(
+        "PROFILE INSERT ERROR:",
+        profileError
+      );
 
-    toastMessage(
-      "Account created!"
-    );
+    }
+
+  }
+
+  toastMessage("Account created");
+
+  if(data.session){
+
+    currentUser = data.user;
+
+    await enterApp();
 
   }else{
 
     toastMessage(
-      "Check your email."
+      "Account created. Please login."
     );
 
   }
@@ -1507,38 +1160,35 @@ async function signup(){
 }
 
 
+/* =========================================
+   LOGIN
+========================================= */
+
 async function login(){
 
-  clearErrors();
-
-
   const email =
-    document
-      .getElementById("loginEmail")
-      .value
-      .trim();
+    emailInput.value.trim();
 
   const password =
-    document
-      .getElementById("loginPassword")
-      .value;
+    passwordInput.value;
 
+  if(!email){
 
-  if(!email || !password){
-
-    errorMessage(
-      "loginError",
-      "Enter email and password."
-    );
+    toastMessage("Enter email");
 
     return;
   }
 
+  if(!password){
 
-  const {
-    data,
-    error
-  } =
+    toastMessage("Enter password");
+
+    return;
+  }
+
+  loginBtn.disabled = true;
+
+  const { data,error } =
     await db.auth.signInWithPassword({
 
       email:email,
@@ -1547,68 +1197,189 @@ async function login(){
 
     });
 
+  loginBtn.disabled = false;
 
   if(error){
 
-    errorMessage(
-      "loginError",
-      error.message
+    console.error("LOGIN ERROR:",error);
+
+    toastMessage(error.message);
+
+    return;
+  }
+
+  currentUser = data.user;
+
+  await enterApp();
+
+}
+
+
+/* =========================================
+   USERS
+========================================= */
+
+async function loadUsers(){
+
+  if(!currentUser) return;
+
+  const { data,error } =
+    await db
+      .from("profiles")
+      .select("id,username,created_at")
+      .neq("id",currentUser.id)
+      .order("username",{ascending:true});
+
+  if(error){
+
+    console.error("USERS ERROR:",error);
+
+    toastMessage(
+      "Users load error: " + error.message
     );
 
     return;
   }
 
+  renderUsers(data || []);
 
-  if(data.user){
+}
 
-    await enterApp(
-      data.user
-    );
 
+function renderUsers(list){
+
+  usersList.innerHTML = "";
+
+  if(!list.length){
+
+    usersList.innerHTML = `
+      <div style="
+        text-align:center;
+        color:#777;
+        padding:40px 10px;
+      ">
+        No other users yet.
+      </div>
+    `;
+
+    return;
   }
 
+  list.forEach(user => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "userCard";
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className = "avatar";
+
+    avatar.textContent =
+      getInitial(user.username);
+
+    const info =
+      document.createElement("div");
+
+    info.className = "userInfo";
+
+    const name =
+      document.createElement("div");
+
+    name.className = "userName";
+
+    name.textContent =
+      user.username || "User";
+
+    const email =
+      document.createElement("div");
+
+    email.className = "userEmail";
+
+    email.textContent =
+      "Tap to select";
+
+    info.appendChild(name);
+
+    info.appendChild(email);
+
+    card.appendChild(avatar);
+
+    card.appendChild(info);
+
+    /*
+      IMPORTANT:
+      Card tap only SELECTS user.
+      It DOES NOT open chat.
+    */
+
+    card.addEventListener("click",() => {
+
+      selectedUser = user;
+
+      document
+        .querySelectorAll(".userCard")
+        .forEach(c =>
+          c.style.borderColor =
+            "rgba(255,255,255,.08)"
+        );
+
+      card.style.borderColor =
+        "rgba(255,255,255,.4)";
+
+      toastMessage(
+        user.username + " selected"
+      );
+
+    });
+
+    usersList.appendChild(card);
+
+  });
+
 }
 
 
-/* =========================================================
-   APP
-========================================================= */
+/* =========================================
+   SEARCH
+========================================= */
 
-async function enterApp(user){
+searchInput.addEventListener(
+  "input",
+  async () => {
 
-  currentUser = user;
+    const q =
+      searchInput.value
+        .trim()
+        .toLowerCase();
 
-  await loadProfile(user);
+    const { data,error } =
+      await db
+        .from("profiles")
+        .select("id,username,created_at")
+        .neq("id",currentUser.id)
+        .order("username",{ascending:true});
 
-  updateProfileUI();
+    if(error) return;
 
-  authPage.classList.add("hidden");
+    const filtered =
+      (data || []).filter(user =>
+        (user.username || "")
+          .toLowerCase()
+          .includes(q)
+      );
 
-  mainShell.classList.remove("hidden");
+    renderUsers(filtered);
 
-  loading.classList.add("hidden");
-
-  await loadUsers();
-
-  showPage("home");
-
-}
-
-
-function showAuth(){
-
-  loading.classList.add("hidden");
-
-  mainShell.classList.add("hidden");
-
-  authPage.classList.remove("hidden");
-
-}
+  }
+);
 
 
-/* =========================================================
-   PAGE / SLIDER
-========================================================= */
+/* =========================================
+   PAGE NAV
+========================================= */
 
 function moveSlider(page){
 
@@ -1617,23 +1388,20 @@ function moveSlider(page){
       document.querySelectorAll(".navItem")
     );
 
+  let index = 0;
 
-  const index =
-    page === "home"
-      ? 0
-      : page === "chat"
-        ? 1
-        : 2;
+  if(page === "home")
+    index = 0;
 
+  if(page === "chat")
+    index = 1;
 
-  const item =
-    items[index];
+  if(page === "profile")
+    index = 2;
 
+  const item = items[index];
 
-  if(!item){
-    return;
-  }
-
+  if(!item) return;
 
   navPill.style.left =
     item.offsetLeft + "px";
@@ -1643,343 +1411,98 @@ function moveSlider(page){
 
 function showPage(page){
 
-  if(page === "chat"){
-
-    if(selectedUser){
-
-      toastMessage(
-        "Swipe from right edge ← to open Chat"
-      );
-
-    }else{
-
-      toastMessage(
-        "Select a user first"
-      );
-
-    }
-
-    return;
-  }
-
-
   currentPage = page;
 
+  homePage.classList.add("hidden");
 
-  homePage.classList.add(
-    "hidden"
-  );
+  profilePage.classList.add("hidden");
 
-  profilePage.classList.add(
-    "hidden"
-  );
+  navHome.classList.remove("active");
+
+  navChat.classList.remove("active");
+
+  navProfile.classList.remove("active");
 
 
   if(page === "home"){
 
-    homePage.classList.remove(
-      "hidden"
-    );
+    homePage.classList.remove("hidden");
+
+    navHome.classList.add("active");
+
+    pageTitle.textContent = "Home";
 
   }
 
 
   if(page === "profile"){
 
-    profilePage.classList.remove(
-      "hidden"
-    );
+    profilePage.classList.remove("hidden");
+
+    navProfile.classList.add("active");
+
+    pageTitle.textContent = "Profile";
 
     updateProfileUI();
 
   }
 
 
-  document
-    .querySelectorAll(".navItem")
-    .forEach(item=>{
+  /*
+    Chat button DOES NOT open chat.
+    Chat opens only with right-edge swipe.
+  */
 
-      item.classList.toggle(
-        "active",
-        item.dataset.page === page
-      );
+  if(page === "chat"){
 
-    });
+    toastMessage(
+      "Swipe from the right edge to open Chat"
+    );
+
+    page = "home";
+
+    homePage.classList.remove("hidden");
+
+    navHome.classList.add("active");
+
+    pageTitle.textContent = "Home";
+
+  }
 
 
-  requestAnimationFrame(()=>{
+  requestAnimationFrame(() => {
+
     moveSlider(page);
-  });
-
-}
-
-
-/* =========================================================
-   NAV
-========================================================= */
-
-document
-  .querySelectorAll(".navItem")
-  .forEach(item=>{
-
-    item.addEventListener(
-      "click",
-      ()=>{
-        showPage(
-          item.dataset.page
-        );
-      }
-    );
-
-  });
-
-
-document
-  .getElementById("headerProfileBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-      showPage("profile");
-    }
-  );
-
-
-/* =========================================================
-   USERS
-========================================================= */
-
-async function loadUsers(){
-
-  if(!currentUser){
-    return;
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from("profiles")
-      .select("id,username")
-      .neq(
-        "id",
-        currentUser.id
-      )
-      .order("username");
-
-
-  if(error){
-
-    console.error(
-      "loadUsers:",
-      error
-    );
-
-    usersList.innerHTML = `
-      <div style="
-        padding:30px 10px;
-        text-align:center;
-        color:#777;
-        font-size:13px;
-      ">
-        Could not load users.
-      </div>
-    `;
-
-    return;
-  }
-
-
-  renderUsers(
-    data || []
-  );
-
-}
-
-
-function renderUsers(users){
-
-  usersList.innerHTML = "";
-
-
-  if(!users.length){
-
-    usersList.innerHTML = `
-      <div style="
-        padding:35px 10px;
-        text-align:center;
-        color:#666;
-        font-size:13px;
-      ">
-        No other users found.
-      </div>
-    `;
-
-    return;
-  }
-
-
-  users.forEach(user=>{
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "userCard glass";
-
-
-    const avatar =
-      document.createElement("div");
-
-    avatar.className =
-      "avatar";
-
-    avatar.textContent =
-      initial(user.username);
-
-
-    const info =
-      document.createElement("div");
-
-    info.className =
-      "userInfo";
-
-
-    const name =
-      document.createElement("div");
-
-    name.className =
-      "username";
-
-    name.textContent =
-      user.username;
-
-
-    const status =
-      document.createElement("div");
-
-    status.className =
-      "userStatus";
-
-    status.textContent =
-      "Selected • Swipe right edge to chat";
-
-
-    info.appendChild(name);
-
-    info.appendChild(status);
-
-    card.appendChild(avatar);
-
-    card.appendChild(info);
-
-
-    card.addEventListener(
-      "click",
-      ()=>{
-        selectedUser = user;
-
-        toastMessage(
-          user.username +
-          " selected"
-        );
-      }
-    );
-
-
-    usersList.appendChild(card);
 
   });
 
 }
 
 
-/* =========================================================
-   SEARCH
-========================================================= */
+navHome.addEventListener(
+  "click",
+  () => showPage("home")
+);
 
-searchInput.addEventListener(
-  "input",
-  async ()=>{
+navProfile.addEventListener(
+  "click",
+  () => showPage("profile")
+);
 
-    const q =
-      searchInput.value
-        .trim()
-        .toLowerCase();
+navChat.addEventListener(
+  "click",
+  () => showPage("chat")
+);
 
-
-    if(!q){
-
-      await loadUsers();
-
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } =
-      await db
-        .from("profiles")
-        .select("id,username")
-        .neq(
-          "id",
-          currentUser.id
-        )
-        .ilike(
-          "username",
-          "%" + q + "%"
-        )
-        .order("username");
-
-
-    if(error){
-
-      console.error(
-        "search:",
-        error
-      );
-
-      return;
-    }
-
-
-    renderUsers(
-      data || []
-    );
-
-  }
+profileMini.addEventListener(
+  "click",
+  () => showPage("profile")
 );
 
 
-/* =========================================================
-   CHAT
-========================================================= */
-
-function updateChatHeader(){
-
-  if(!selectedUser){
-    return;
-  }
-
-
-  document.getElementById(
-    "chatName"
-  ).textContent =
-    selectedUser.username;
-
-
-  document.getElementById(
-    "chatAvatar"
-  ).textContent =
-    initial(
-      selectedUser.username
-    );
-
-}
-
+/* =========================================
+   OPEN CHAT
+========================================= */
 
 async function openChat(){
 
@@ -1992,26 +1515,23 @@ async function openChat(){
     return;
   }
 
+  chatUserName.textContent =
+    selectedUser.username || "User";
 
-  updateChatHeader();
+  chatAvatar.textContent =
+    getInitial(selectedUser.username);
 
+  mainShell.classList.add("drawerOpen");
 
-  chatDrawer.classList.add(
-    "open"
-  );
+  overlay.classList.add("show");
 
-  chatOverlay.classList.add(
-    "show"
-  );
+  chatDrawer.classList.add("open");
 
-  mainShell.classList.add(
-    "chatOpen"
-  );
+  /*
+    Edge zone disabled while drawer is open
+  */
 
-
-  edgeZone.style.pointerEvents =
-    "none";
-
+  edgeZone.style.display = "none";
 
   await loadMessages();
 
@@ -2020,67 +1540,43 @@ async function openChat(){
 }
 
 
+/* =========================================
+   CLOSE CHAT
+========================================= */
+
 function closeChat(){
 
-  chatDrawer.classList.remove(
-    "open"
-  );
+  chatDrawer.classList.remove("open");
 
-  chatOverlay.classList.remove(
-    "show"
-  );
+  overlay.classList.remove("show");
 
-  mainShell.classList.remove(
-    "chatOpen"
-  );
+  mainShell.classList.remove("drawerOpen");
 
+  edgeZone.style.display = "block";
 
-  edgeZone.style.pointerEvents =
-    "auto";
+  if(realtimeChannel){
 
+    db.removeChannel(realtimeChannel);
 
-  messageInput.blur();
+    realtimeChannel = null;
+
+  }
 
 }
 
 
-document
-  .getElementById("chatCloseBtn")
-  .addEventListener(
-    "click",
-    closeChat
-  );
-
-
-chatOverlay.addEventListener(
-  "click",
-  closeChat
-);
-
-
-/* =========================================================
-   MESSAGES
-========================================================= */
+/* =========================================
+   LOAD MESSAGES
+========================================= */
 
 async function loadMessages(){
 
-  if(
-    !currentUser ||
-    !selectedUser
-  ){
+  if(!currentUser || !selectedUser)
     return;
-  }
 
+  messages.innerHTML = "";
 
-  renderedMessageIds.clear();
-
-  messagesBox.innerHTML = "";
-
-
-  const {
-    data,
-    error
-  } =
+  const { data,error } =
     await db
       .from("messages")
       .select(
@@ -2099,185 +1595,119 @@ async function loadMessages(){
       )
       .order(
         "created_at",
-        {
-          ascending:true
-        }
+        {ascending:true}
       );
-
 
   if(error){
 
     console.error(
-      "loadMessages:",
+      "LOAD MESSAGES ERROR:",
       error
     );
 
-    messagesBox.innerHTML = `
-      <div class="emptyChat">
-        Could not load messages.
-      </div>
-    `;
+    toastMessage(
+      "Messages error: " +
+      error.message
+    );
 
     return;
   }
 
-
-  if(!data || data.length === 0){
-
-    messagesBox.innerHTML = `
-      <div class="emptyChat">
-        No messages yet.<br>
-        Say hello 👋
-      </div>
-    `;
-
-    return;
-  }
-
-
-  data.forEach(
-    renderMessage
+  (data || []).forEach(
+    message => renderMessage(message)
   );
-
 
   scrollMessages();
 
 }
 
+
+/* =========================================
+   RENDER MESSAGE
+========================================= */
 
 function renderMessage(message){
 
-  if(
-    renderedMessageIds.has(
-      message.id
-    )
-  ){
-    return;
-  }
+  const div =
+    document.createElement("div");
 
-
-  renderedMessageIds.add(
-    message.id
-  );
-
-
-  const empty =
-    messagesBox.querySelector(
-      ".emptyChat"
+  div.className =
+    "msg " +
+    (
+      message.sender_id === currentUser.id
+        ? "mine"
+        : "theirs"
     );
 
-  if(empty){
-    empty.remove();
-  }
+  /*
+    textContent = safe
+    No HTML injection.
+  */
 
-
-  const mine =
-    message.sender_id ===
-    currentUser.id;
-
-
-  const row =
-    document.createElement("div");
-
-  row.className =
-    "messageRow" +
-    (mine ? " mine" : "");
-
-
-  const bubble =
-    document.createElement("div");
-
-  bubble.className =
-    "messageBubble";
-
-
-  const text =
-    document.createElement("div");
-
-  text.textContent =
+  div.textContent =
     message.content;
 
-
-  const time =
-    document.createElement("div");
-
-  time.className =
-    "messageTime";
-
-
-  const date =
-    new Date(
-      message.created_at
-    );
-
-
-  time.textContent =
-    date.toLocaleTimeString(
-      [],
-      {
-        hour:"2-digit",
-        minute:"2-digit"
-      }
-    );
-
-
-  bubble.appendChild(text);
-
-  bubble.appendChild(time);
-
-  row.appendChild(bubble);
-
-  messagesBox.appendChild(row);
-
-
-  scrollMessages();
+  messages.appendChild(div);
 
 }
 
 
-function scrollMessages(){
-
-  requestAnimationFrame(()=>{
-    messagesBox.scrollTop =
-      messagesBox.scrollHeight;
-  });
-
-}
-
-
-/* =========================================================
-   SEND
-========================================================= */
+/* =========================================
+   SEND MESSAGE
+========================================= */
 
 async function sendMessage(){
 
-  if(
-    !currentUser ||
-    !selectedUser
-  ){
+  console.log("SEND CLICK");
+
+  if(!currentUser){
+
+    toastMessage(
+      "Login required"
+    );
+
     return;
   }
 
+  if(!selectedUser){
+
+    toastMessage(
+      "Select a user first"
+    );
+
+    return;
+  }
 
   const content =
     messageInput.value.trim();
 
-
-  if(!content){
+  if(!content)
     return;
-  }
 
 
-  messageInput.value = "";
+  sendBtn.disabled = true;
 
 
-  const {
-    data,
-    error
-  } =
+  console.log("SENDING:",{
+    sender_id:currentUser.id,
+    receiver_id:selectedUser.id,
+    content:content
+  });
+
+
+  /*
+    IMPORTANT FIX:
+    NO .select()
+    NO .single()
+
+    This avoids RLS RETURNING issues.
+  */
+
+  const { error } =
     await db
       .from("messages")
       .insert({
+
         sender_id:
           currentUser.id,
 
@@ -2286,47 +1716,54 @@ async function sendMessage(){
 
         content:
           content
-      })
-      .select()
-      .single();
+
+      });
+
+
+  sendBtn.disabled = false;
 
 
   if(error){
 
     console.error(
-      "sendMessage:",
+      "MESSAGE SEND ERROR:",
       error
     );
 
-    messageInput.value =
-      content;
-
     toastMessage(
-      "Message failed"
+      "Send Error: " +
+      error.message
     );
 
     return;
   }
 
 
-  if(data){
-    renderMessage(data);
-  }
+  /*
+    Clear composer
+  */
+
+  messageInput.value = "";
+
+
+  /*
+    Reload database messages
+  */
+
+  await loadMessages();
+
+  scrollMessages();
 
 }
 
 
-document
-  .getElementById("sendBtn")
-  .addEventListener(
-    "click",
-    sendMessage
-  );
-
+/* =========================================
+   ENTER TO SEND
+========================================= */
 
 messageInput.addEventListener(
   "keydown",
-  event=>{
+  event => {
 
     if(
       event.key === "Enter" &&
@@ -2343,27 +1780,56 @@ messageInput.addEventListener(
 );
 
 
-document
-  .getElementById("attachBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-      toastMessage(
-        "Image/video upload coming next"
-      );
-    }
-  );
+/* =========================================
+   SEND BUTTON
+========================================= */
+
+sendBtn.addEventListener(
+  "click",
+  sendMessage
+);
 
 
-/* =========================================================
+/* =========================================
+   ATTACHMENT
+========================================= */
+
+attachBtn.addEventListener(
+  "click",
+  () => {
+
+    toastMessage(
+      "Attachments coming soon"
+    );
+
+  }
+);
+
+
+/* =========================================
+   SCROLL
+========================================= */
+
+function scrollMessages(){
+
+  requestAnimationFrame(() => {
+
+    messages.scrollTop =
+      messages.scrollHeight;
+
+  });
+
+}
+
+
+/* =========================================
    REALTIME
-========================================================= */
+========================================= */
 
 function subscribeRealtime(){
 
-  if(!currentUser){
+  if(!currentUser || !selectedUser)
     return;
-  }
 
 
   if(realtimeChannel){
@@ -2372,16 +1838,16 @@ function subscribeRealtime(){
       realtimeChannel
     );
 
-    realtimeChannel = null;
-
   }
 
 
   realtimeChannel =
     db
       .channel(
-        "chatx-" +
-        currentUser.id
+        "chat-" +
+        currentUser.id +
+        "-" +
+        selectedUser.id
       )
       .on(
         "postgres_changes",
@@ -2390,43 +1856,67 @@ function subscribeRealtime(){
           schema:"public",
           table:"messages"
         },
-        payload=>{
+        payload => {
 
-          const message =
+          const msg =
             payload.new;
 
-
-          if(
-            !selectedUser ||
-            !message
-          ){
-            return;
-          }
-
-
-          const correctChat =
+          const isCurrentChat =
             (
-              message.sender_id ===
-              currentUser.id &&
-              message.receiver_id ===
-              selectedUser.id
+              msg.sender_id ===
+                currentUser.id &&
+              msg.receiver_id ===
+                selectedUser.id
             )
             ||
             (
-              message.sender_id ===
-              selectedUser.id &&
-              message.receiver_id ===
+              msg.sender_id ===
+                selectedUser.id &&
+              msg.receiver_id ===
+                currentUser.id
+            );
+
+          if(!isCurrentChat)
+            return;
+
+          /*
+            Avoid duplicate visual message
+            because loadMessages can also run.
+          */
+
+          const exists =
+            Array.from(
+              messages.children
+            ).some(
+              el =>
+                el.dataset.id ==
+                String(msg.id)
+            );
+
+          if(exists)
+            return;
+
+          const div =
+            document.createElement("div");
+
+          div.dataset.id =
+            String(msg.id);
+
+          div.className =
+            "msg " +
+            (
+              msg.sender_id ===
               currentUser.id
+                ? "mine"
+                : "theirs"
             );
 
+          div.textContent =
+            msg.content;
 
-          if(correctChat){
+          messages.appendChild(div);
 
-            renderMessage(
-              message
-            );
-
-          }
+          scrollMessages();
 
         }
       )
@@ -2435,63 +1925,67 @@ function subscribeRealtime(){
 }
 
 
-/* =========================================================
-   RIGHT EDGE SWIPE
-========================================================= */
-
-let edgeStartX = 0;
-let edgeStartY = 0;
-let edgeTracking = false;
-
+/* =========================================
+   RIGHT EDGE SWIPE OPEN
+========================================= */
 
 edgeZone.addEventListener(
-  "pointerdown",
-  event=>{
+  "touchstart",
+  event => {
+
+    if(chatDrawer.classList.contains("open"))
+      return;
+
+    edgeDragging = true;
 
     edgeStartX =
-      event.clientX;
+      event.touches[0].clientX;
 
-    edgeStartY =
-      event.clientY;
-
-    edgeTracking = true;
-
-    try{
-      edgeZone.setPointerCapture(
-        event.pointerId
-      );
-    }catch(e){}
-
-  }
+  },
+  {passive:true}
 );
 
 
 edgeZone.addEventListener(
-  "pointerup",
-  event=>{
+  "touchmove",
+  event => {
 
-    if(!edgeTracking){
+    if(!edgeDragging)
       return;
-    }
+
+    /*
+      Prevent page movement
+      while opening drawer.
+    */
+
+    event.preventDefault();
+
+  },
+  {passive:false}
+);
 
 
-    edgeTracking = false;
+edgeZone.addEventListener(
+  "touchend",
+  event => {
 
+    if(!edgeDragging)
+      return;
+
+    const endX =
+      event.changedTouches[0].clientX;
 
     const dx =
-      event.clientX -
-      edgeStartX;
+      endX - edgeStartX;
 
-    const dy =
-      event.clientY -
-      edgeStartY;
+    edgeDragging = false;
 
+    /*
+      Right -> Left
+      dx must be negative.
+    */
 
-    if(
-      dx < -55 &&
-      Math.abs(dx) >
-      Math.abs(dy)
-    ){
+    if(dx < -55){
 
       openChat();
 
@@ -2501,74 +1995,65 @@ edgeZone.addEventListener(
 );
 
 
-edgeZone.addEventListener(
-  "pointercancel",
-  ()=>{
-    edgeTracking = false;
-  }
-);
-
-
-/* =========================================================
-   DRAWER SWIPE CLOSE
-========================================================= */
-
-let drawerStartX = 0;
-let drawerStartY = 0;
-let drawerTracking = false;
-
+/* =========================================
+   CHAT DRAWER SWIPE CLOSE
+========================================= */
 
 chatDrawer.addEventListener(
-  "pointerdown",
-  event=>{
+  "touchstart",
+  event => {
+
+    const target =
+      event.target;
+
+    /*
+      Don't steal gestures from
+      buttons, inputs or message scroll.
+    */
 
     if(
-      event.target.closest("button") ||
-      event.target.closest("input") ||
-      event.target.closest(".messages")
+      target.closest("button") ||
+      target.closest("input") ||
+      target.closest(".messages")
     ){
+
+      drawerDragging = false;
+
       return;
+
     }
 
+    drawerDragging = true;
 
     drawerStartX =
-      event.clientX;
+      event.touches[0].clientX;
 
-    drawerStartY =
-      event.clientY;
-
-    drawerTracking = true;
-
-  }
+  },
+  {passive:true}
 );
 
 
 chatDrawer.addEventListener(
-  "pointerup",
-  event=>{
+  "touchend",
+  event => {
 
-    if(!drawerTracking){
+    if(!drawerDragging)
       return;
-    }
 
-
-    drawerTracking = false;
-
+    const endX =
+      event.changedTouches[0].clientX;
 
     const dx =
-      event.clientX -
-      drawerStartX;
+      endX - drawerStartX;
 
-    const dy =
-      event.clientY -
-      drawerStartY;
+    drawerDragging = false;
 
+    /*
+      Left -> Right
+      Close drawer.
+    */
 
-    if(
-      dx > 90 &&
-      Math.abs(dx) >
-      Math.abs(dy)
-    ){
+    if(dx > 90){
 
       closeChat();
 
@@ -2578,150 +2063,89 @@ chatDrawer.addEventListener(
 );
 
 
-/* =========================================================
+/* =========================================
+   BUTTONS
+========================================= */
+
+backChatBtn.addEventListener(
+  "click",
+  closeChat
+);
+
+overlay.addEventListener(
+  "click",
+  closeChat
+);
+
+
+/* =========================================
    LOGOUT
-========================================================= */
+========================================= */
 
-document
-  .getElementById("logoutBtn")
-  .addEventListener(
-    "click",
-    async ()=>{
+logoutBtn.addEventListener(
+  "click",
+  async () => {
 
-      if(realtimeChannel){
+    if(realtimeChannel){
 
-        await db.removeChannel(
-          realtimeChannel
-        );
-
-        realtimeChannel = null;
-
-      }
-
-
-      await db.auth.signOut();
-
-
-      currentUser = null;
-      currentProfile = null;
-      selectedUser = null;
-
-
-      mainShell.classList.add(
-        "hidden"
+      db.removeChannel(
+        realtimeChannel
       );
 
-      authPage.classList.remove(
-        "hidden"
-      );
-
-
-      signupForm.classList.add(
-        "hidden"
-      );
-
-      loginForm.classList.remove(
-        "hidden"
-      );
-
-
-      clearErrors();
-
-      closeChat();
-
-      toastMessage(
-        "Logged out"
-      );
+      realtimeChannel = null;
 
     }
-  );
+
+    await db.auth.signOut();
+
+    currentUser = null;
+
+    currentProfile = null;
+
+    selectedUser = null;
+
+    closeChat();
+
+    mainShell.style.display = "none";
+
+    loginScreen.classList.remove(
+      "hidden"
+    );
+
+    usernameInput.value = "";
+
+    emailInput.value = "";
+
+    passwordInput.value = "";
+
+    toastMessage("Logged out");
+
+  }
+);
 
 
-/* =========================================================
-   AUTH BUTTONS
-========================================================= */
-
-document
-  .getElementById("loginBtn")
-  .addEventListener(
-    "click",
-    login
-  );
-
-
-document
-  .getElementById("signupBtn")
-  .addEventListener(
-    "click",
-    signup
-  );
-
-
-document
-  .getElementById("showSignup")
-  .addEventListener(
-    "click",
-    ()=>{
-      clearErrors();
-      loginForm.classList.add("hidden");
-      signupForm.classList.remove("hidden");
-    }
-  );
-
-
-document
-  .getElementById("showLogin")
-  .addEventListener(
-    "click",
-    ()=>{
-      clearErrors();
-      signupForm.classList.add("hidden");
-      loginForm.classList.remove("hidden");
-    }
-  );
-
-
-/* =========================================================
-   ENTER KEY
-========================================================= */
-
-document
-  .getElementById("loginPassword")
-  .addEventListener(
-    "keydown",
-    event=>{
-      if(event.key === "Enter"){
-        login();
-      }
-    }
-  );
-
-
-document
-  .getElementById("signupPassword")
-  .addEventListener(
-    "keydown",
-    event=>{
-      if(event.key === "Enter"){
-        signup();
-      }
-    }
-  );
-
-
-/* =========================================================
-   AUTH SESSION
-========================================================= */
+/* =========================================
+   AUTH STATE
+========================================= */
 
 db.auth.onAuthStateChange(
-  (event,session)=>{
+  async (event,session) => {
 
-    if(
-      event === "SIGNED_OUT"
-    ){
+    if(session?.user){
 
-      currentUser = null;
-      currentProfile = null;
+      currentUser =
+        session.user;
+
+      if(
+        loginScreen &&
+        !loginScreen.classList.contains(
+          "hidden"
+        )
+      ){
+
+        await enterApp();
+
+      }
 
     }
 
@@ -2729,73 +2153,54 @@ db.auth.onAuthStateChange(
 );
 
 
-/* =========================================================
-   START APP
-========================================================= */
+/* =========================================
+   INITIAL SESSION
+========================================= */
 
-async function startApp(){
+(async function(){
 
-  try{
+  const { data } =
+    await db.auth.getSession();
 
-    const {
-      data,
-      error
-    } =
-      await db.auth.getSession();
+  if(data?.session?.user){
 
+    currentUser =
+      data.session.user;
 
-    if(error){
-      console.error(
-        "getSession:",
-        error
-      );
-    }
-
-
-    if(
-      data?.session?.user
-    ){
-
-      await enterApp(
-        data.session.user
-      );
-
-    }else{
-
-      showAuth();
-
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-    showAuth();
+    await enterApp();
 
   }
 
-}
+})();
 
 
-/* =========================================================
+/* =========================================
+   LOGIN EVENTS
+========================================= */
+
+loginBtn.addEventListener(
+  "click",
+  login
+);
+
+signupBtn.addEventListener(
+  "click",
+  signup
+);
+
+
+/* =========================================
    RESIZE
-========================================================= */
+========================================= */
 
 window.addEventListener(
   "resize",
-  ()=>{
-    requestAnimationFrame(()=>{
-      moveSlider(currentPage);
-    });
+  () => {
+
+    moveSlider(currentPage);
+
   }
 );
-
-
-/* =========================================================
-   START
-========================================================= */
-
-startApp();
 
 </script>
 
