@@ -7,32 +7,12 @@
 
 <title>ChatX</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
-}
-
-:root{
-  --bg:#050609;
-  --card:rgba(255,255,255,.075);
-  --card2:rgba(255,255,255,.055);
-  --border:rgba(255,255,255,.13);
-  --text:#fff;
-  --muted:#92959d;
-  --accent:#fff;
-  --shadow:0 20px 60px rgba(0,0,0,.45);
-}
-
-body.light{
-  --bg:#eef0f4;
-  --card:rgba(255,255,255,.68);
-  --card2:rgba(255,255,255,.52);
-  --border:rgba(0,0,0,.09);
-  --text:#101114;
-  --muted:#686b73;
-  --accent:#111;
-  --shadow:0 20px 60px rgba(0,0,0,.12);
 }
 
 html,body{
@@ -40,102 +20,183 @@ html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,
-  "SF Pro Display","SF Pro Text",Arial,sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
+  "Segoe UI",sans-serif;
+  background:#050505;
+  color:#fff;
 }
 
-button,input,textarea{
-  font:inherit;
+body{
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,.08),transparent 30%),
+    radial-gradient(circle at 90% 90%,rgba(255,255,255,.05),transparent 35%),
+    #050505;
 }
 
-button{
-  border:0;
-  color:inherit;
-}
+/* ================= APP ================= */
 
-.app{
+#app{
   position:relative;
   width:100%;
   height:100%;
   overflow:hidden;
-  background:
-    radial-gradient(circle at 20% 0%,rgba(255,255,255,.08),transparent 30%),
-    radial-gradient(circle at 100% 80%,rgba(255,255,255,.05),transparent 35%),
-    var(--bg);
 }
 
-/* SHELL */
+/* ================= GLASS ================= */
 
-.shell{
+.glass{
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.35),
+    inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+}
+
+/* ================= AUTH ================= */
+
+#authPage{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.authBox{
+  width:100%;
+  max-width:390px;
+  padding:28px;
+  border-radius:32px;
+}
+
+.logo{
+  text-align:center;
+  font-size:36px;
+  font-weight:800;
+  letter-spacing:-1.5px;
+  margin-bottom:6px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#999;
+  font-size:14px;
+  margin-bottom:28px;
+}
+
+.input{
+  width:100%;
+  height:52px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  border-radius:17px;
+  outline:none;
+  padding:0 16px;
+  margin-bottom:12px;
+  font-size:15px;
+}
+
+.input:focus{
+  border-color:rgba(255,255,255,.35);
+}
+
+.btn{
+  width:100%;
+  height:52px;
+  border:none;
+  border-radius:17px;
+  background:#fff;
+  color:#000;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:4px;
+}
+
+.btn.secondary{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.authSwitch{
+  text-align:center;
+  margin-top:18px;
+  color:#888;
+  font-size:13px;
+}
+
+.authSwitch span{
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+#errorBox{
+  display:none;
+  margin-bottom:12px;
+  padding:11px 13px;
+  border-radius:13px;
+  background:rgba(255,70,70,.12);
+  border:1px solid rgba(255,70,70,.2);
+  color:#ff8b8b;
+  font-size:13px;
+}
+
+/* ================= MAIN SHELL ================= */
+
+#mainShell{
   position:absolute;
   inset:0;
   transition:
     transform .48s cubic-bezier(.22,1,.36,1),
-    filter .48s ease;
+    width .48s cubic-bezier(.22,1,.36,1);
 }
 
-.shell.shrink{
-  transform:scale(.91) translateX(-5%);
-  filter:brightness(.68);
+#mainShell.chatOpen{
+  transform:scale(.92) translateX(-4%);
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .header{
-  height:92px;
-  padding:42px 20px 10px;
+  height:90px;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  padding:20px;
 }
 
 .brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.logo{
-  width:38px;
-  height:38px;
-  border-radius:13px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.12);
-  border:1px solid var(--border);
-  box-shadow:inset 0 1px rgba(255,255,255,.18);
-  font-weight:800;
-  font-size:14px;
-}
-
-.brand h1{
-  margin:0;
   font-size:25px;
+  font-weight:800;
   letter-spacing:-1px;
 }
 
-.icon-btn{
+.headerIcon{
   width:42px;
   height:42px;
-  border-radius:15px;
-  background:var(--card);
-  border:1px solid var(--border);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  display:grid;
-  place-items:center;
-  font-size:20px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
 }
 
-/* PAGE */
+/* ================= PAGES ================= */
 
 .page{
   position:absolute;
-  inset:92px 0 88px;
-  overflow:auto;
-  padding:0 18px 30px;
+  top:90px;
+  left:0;
+  right:0;
+  bottom:92px;
+  padding:0 18px 20px;
+  overflow-y:auto;
   scrollbar-width:none;
 }
 
@@ -147,905 +208,709 @@ button{
   display:none;
 }
 
-/* SEARCH */
+/* ================= HOME ================= */
 
-.search{
-  height:48px;
-  border-radius:17px;
-  background:var(--card);
-  border:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  padding:0 15px;
-  margin-bottom:18px;
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
+.welcome{
+  margin:8px 0 20px;
 }
 
-.search span{
-  color:var(--muted);
-  font-size:19px;
-}
-
-.search input{
-  width:100%;
-  border:0;
-  outline:0;
-  background:none;
-  color:var(--text);
-  padding-left:10px;
-}
-
-.search input::placeholder{
-  color:var(--muted);
-}
-
-/* CARDS */
-
-.section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:8px 3px 12px;
-}
-
-.section-title h2{
+.welcome h1{
   margin:0;
-  font-size:18px;
+  font-size:32px;
+  letter-spacing:-1.3px;
 }
 
-.section-title span{
-  color:var(--muted);
-  font-size:13px;
+.welcome p{
+  margin:6px 0 0;
+  color:#8e8e8e;
 }
 
-.chat-card{
+.searchBox{
+  width:100%;
+  height:50px;
+  border-radius:18px;
+  padding:0 16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+  outline:none;
+  font-size:14px;
+  margin-bottom:16px;
+}
+
+.sectionTitle{
+  color:#777;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1.4px;
+  margin:18px 4px 10px;
+}
+
+.userCard{
+  width:100%;
   display:flex;
   align-items:center;
   gap:13px;
   padding:14px;
-  margin-bottom:10px;
-  min-height:78px;
-  border-radius:23px;
-  background:var(--card);
-  border:1px solid var(--border);
-  backdrop-filter:blur(25px);
-  -webkit-backdrop-filter:blur(25px);
-  box-shadow:0 10px 35px rgba(0,0,0,.16);
-  pointer-events:none;
+  border-radius:21px;
+  margin-bottom:9px;
+  cursor:pointer;
+}
+
+.userCard:active{
+  transform:scale(.98);
 }
 
 .avatar{
-  width:50px;
-  height:50px;
-  flex:none;
-  border-radius:18px;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(145deg,#34373d,#121317);
-  border:1px solid var(--border);
-  font-weight:800;
-  overflow:hidden;
-}
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.chat-info{
-  flex:1;
-  min-width:0;
-}
-
-.chat-name{
-  font-size:16px;
-  font-weight:700;
-  margin-bottom:5px;
-}
-
-.chat-preview{
-  color:var(--muted);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  font-size:14px;
-}
-
-.chat-time{
-  color:var(--muted);
-  font-size:11px;
-  align-self:flex-start;
-}
-
-/* PROFILE */
-
-.profile-top{
-  text-align:center;
-  padding:20px 0 25px;
-}
-
-.profile-avatar{
-  width:105px;
-  height:105px;
-  border-radius:34px;
-  margin:auto;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(145deg,#383b42,#101115);
-  border:1px solid var(--border);
-  overflow:hidden;
-  font-size:28px;
-  font-weight:800;
-  position:relative;
-  box-shadow:var(--shadow);
-}
-
-.profile-avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.photo-edit{
-  position:absolute;
-  right:-2px;
-  bottom:-2px;
-  width:34px;
-  height:34px;
-  border-radius:12px;
-  background:#fff;
-  color:#000;
-  display:grid;
-  place-items:center;
-  font-size:15px;
-}
-
-.profile-name{
-  font-size:23px;
-  font-weight:800;
-  margin-top:14px;
-}
-
-.profile-user{
-  color:var(--muted);
-  margin-top:4px;
-}
-
-.bio{
-  color:var(--muted);
-  font-size:14px;
-  margin:10px auto 0;
-  max-width:300px;
-}
-
-.online{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin-top:10px;
-  font-size:12px;
-}
-
-.online-dot{
-  width:7px;
-  height:7px;
+  width:48px;
+  height:48px;
   border-radius:50%;
-  background:#55e889;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(135deg,#444,#111);
+  border:1px solid rgba(255,255,255,.15);
+  font-weight:700;
+  flex-shrink:0;
 }
 
-.primary-btn{
-  margin-top:15px;
-  height:46px;
-  padding:0 22px;
-  border-radius:16px;
-  background:var(--text);
-  color:var(--bg);
+.userInfo{
+  min-width:0;
+  flex:1;
+}
+
+.username{
+  font-size:15px;
   font-weight:700;
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:9px;
-  margin-bottom:15px;
+.userStatus{
+  color:#777;
+  font-size:12px;
+  margin-top:3px;
 }
 
-.stat{
-  padding:15px 5px;
-  border-radius:20px;
-  background:var(--card);
-  border:1px solid var(--border);
+/* ================= PROFILE ================= */
+
+.profileBox{
+  padding:25px;
+  border-radius:30px;
   text-align:center;
 }
 
-.stat strong{
-  display:block;
-  font-size:18px;
-}
-
-.stat span{
-  color:var(--muted);
-  font-size:11px;
-}
-
-/* SETTINGS */
-
-.setting-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:22px;
-  overflow:hidden;
-  margin-bottom:12px;
-  backdrop-filter:blur(25px);
-}
-
-.setting-row{
-  min-height:58px;
+.bigAvatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin:0 auto 15px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 17px;
-  border-bottom:1px solid var(--border);
+  justify-content:center;
+  font-size:30px;
+  font-weight:800;
+  background:linear-gradient(135deg,#555,#111);
+  border:1px solid rgba(255,255,255,.16);
 }
 
-.setting-row:last-child{
-  border-bottom:0;
+.profileName{
+  font-size:22px;
+  font-weight:800;
 }
 
-.setting-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
+.profileEmail{
+  color:#777;
+  margin-top:5px;
+  font-size:13px;
 }
 
-.setting-icon{
-  width:32px;
-  height:32px;
-  border-radius:11px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.08);
+.logout{
+  margin-top:25px;
 }
 
-.setting-arrow{
-  color:var(--muted);
-}
+/* ================= BOTTOM NAV ================= */
 
-/* BOTTOM NAV */
-
-.bottom-nav{
+.bottomNav{
   position:absolute;
-  left:14px;
-  right:14px;
-  bottom:13px;
-  height:66px;
+  bottom:15px;
+  left:15px;
+  right:15px;
+  height:64px;
   border-radius:25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
   padding:5px;
-  background:rgba(25,27,32,.72);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter:blur(30px);
-  -webkit-backdrop-filter:blur(30px);
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  z-index:50;
-  box-shadow:0 15px 45px rgba(0,0,0,.35);
+  z-index:20;
 }
 
-body.light .bottom-nav{
-  background:rgba(255,255,255,.7);
+.navItem{
+  position:relative;
+  flex:1;
+  height:54px;
+  border-radius:19px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  cursor:pointer;
+  z-index:2;
+  font-size:12px;
+  font-weight:600;
 }
 
-.nav-pill{
+.navItem.active{
+  color:#fff;
+}
+
+.navPill{
   position:absolute;
   top:5px;
   bottom:5px;
-  width:calc((100% - 10px)/3);
-  border-radius:20px;
-  background:rgba(255,255,255,.13);
+  width:calc(33.333% - 10px);
+  border-radius:19px;
+  background:rgba(255,255,255,.1);
   border:1px solid rgba(255,255,255,.1);
   transition:
-    transform .45s cubic-bezier(.22,1,.36,1),
-    width .35s ease;
-  pointer-events:none;
+    transform .45s cubic-bezier(.22,1,.36,1);
+  z-index:1;
 }
 
-.nav-btn{
-  position:relative;
-  z-index:2;
-  background:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:3px;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:700;
-}
+/* ================= CHAT OVERLAY ================= */
 
-.nav-btn.active{
-  color:var(--text);
-}
-
-.nav-icon{
-  font-size:19px;
-}
-
-/* OVERLAY */
-
-.overlay{
+#chatOverlay{
   position:absolute;
   inset:0;
   background:rgba(0,0,0,.42);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
   opacity:0;
   pointer-events:none;
   transition:opacity .4s ease;
-  z-index:70;
-  backdrop-filter:blur(3px);
+  z-index:50;
 }
 
-.overlay.show{
+#chatOverlay.open{
   opacity:1;
   pointer-events:auto;
 }
 
-/* CHAT DRAWER */
+/* ================= CHAT DRAWER ================= */
 
-.chat-drawer{
+#chatDrawer{
   position:absolute;
   top:0;
   right:0;
-  width:min(94%,430px);
+  width:min(440px,94vw);
   height:100%;
-  z-index:80;
-  transform:translateX(105%);
-  transition:transform .48s cubic-bezier(.22,1,.36,1);
-  background:rgba(15,17,22,.72);
-  border-left:1px solid rgba(255,255,255,.14);
-  box-shadow:-20px 0 60px rgba(0,0,0,.35);
+  z-index:60;
+
+  background:rgba(17,17,17,.72);
+  border-left:1px solid rgba(255,255,255,.12);
+
   backdrop-filter:blur(38px);
   -webkit-backdrop-filter:blur(38px);
-  touch-action:pan-y;
+
+  transform:translateX(105%);
+  transition:
+    transform .48s cubic-bezier(.22,1,.36,1);
+
   display:flex;
   flex-direction:column;
 }
 
-body.light .chat-drawer{
-  background:rgba(245,247,250,.82);
-}
-
-.chat-drawer.open{
+#chatDrawer.open{
   transform:translateX(0);
 }
 
-.chat-header{
-  height:92px;
-  padding:42px 16px 8px;
+/* ================= CHAT HEADER ================= */
+
+.chatHeader{
+  height:85px;
   display:flex;
   align-items:center;
-  gap:11px;
-  border-bottom:1px solid var(--border);
-  flex:none;
+  gap:12px;
+  padding:16px;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.back-btn{
+.backBtn{
   width:42px;
   height:42px;
-  border-radius:15px;
-  background:var(--card);
-  border:1px solid var(--border);
-  display:grid;
-  place-items:center;
-  font-size:21px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  flex-shrink:0;
 }
 
-.chat-person{
+.chatUser{
   flex:1;
+  min-width:0;
 }
 
-.chat-person strong{
-  display:block;
-  font-size:17px;
+.chatUserName{
+  font-size:16px;
+  font-weight:750;
 }
 
-.chat-person span{
-  color:#55e889;
-  font-size:12px;
+.chatUserStatus{
+  font-size:11px;
+  color:#777;
+  margin-top:3px;
 }
 
-.messages{
+/* ================= MESSAGES ================= */
+
+#messages{
   flex:1;
   overflow-y:auto;
   padding:20px 15px;
-  overscroll-behavior:contain;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
   touch-action:pan-y;
+  scrollbar-width:none;
+}
+
+#messages::-webkit-scrollbar{
+  display:none;
 }
 
 .message{
   max-width:78%;
-  padding:11px 14px;
-  border-radius:19px;
-  margin-bottom:9px;
+  padding:10px 13px;
+  border-radius:18px;
   font-size:14px;
   line-height:1.35;
   word-wrap:break-word;
+  animation:messageIn .22s ease;
 }
 
-.message.in{
-  background:rgba(255,255,255,.09);
-  border:1px solid var(--border);
-  border-bottom-left-radius:6px;
+@keyframes messageIn{
+  from{
+    opacity:0;
+    transform:translateY(7px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
 }
 
-.message.out{
-  margin-left:auto;
-  background:var(--text);
-  color:var(--bg);
+.message.mine{
+  align-self:flex-end;
+  background:#fff;
+  color:#000;
   border-bottom-right-radius:6px;
 }
 
-.msg-time{
-  display:block;
+.message.theirs{
+  align-self:flex-start;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.08);
+  border-bottom-left-radius:6px;
+}
+
+.messageTime{
   font-size:9px;
   opacity:.5;
   margin-top:4px;
   text-align:right;
 }
 
+/* ================= COMPOSER ================= */
+
 .composer{
-  padding:10px 12px 15px;
-  border-top:1px solid var(--border);
+  padding:10px 12px 14px;
   display:flex;
   gap:8px;
-  align-items:flex-end;
-  flex:none;
+  border-top:1px solid rgba(255,255,255,.08);
 }
 
-.attach{
-  width:43px;
-  height:43px;
-  flex:none;
-  border-radius:15px;
-  background:var(--card);
-  border:1px solid var(--border);
-  display:grid;
-  place-items:center;
-  font-size:20px;
-}
-
-.composer textarea{
+.messageInput{
   flex:1;
-  min-height:43px;
-  max-height:110px;
-  resize:none;
-  border:1px solid var(--border);
+  min-width:0;
+  height:48px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
   outline:none;
-  border-radius:16px;
-  padding:11px 12px;
-  background:var(--card);
-  color:var(--text);
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  padding:0 15px;
+  font-size:14px;
 }
 
-.send{
-  width:43px;
-  height:43px;
-  flex:none;
-  border-radius:15px;
-  background:var(--text);
-  color:var(--bg);
-  display:grid;
-  place-items:center;
+.sendBtn{
+  width:48px;
+  height:48px;
+  border-radius:18px;
+  border:none;
+  background:#fff;
+  color:#000;
   font-size:18px;
+  cursor:pointer;
 }
 
-/* RIGHT EDGE */
+/* ================= EDGE ZONE ================= */
 
-.edge-zone{
+#edgeZone{
   position:absolute;
+  top:0;
   right:0;
-  top:25%;
-  width:68px;
-  height:50%;
-  z-index:60;
+  width:70px;
+  height:100%;
+  z-index:45;
   touch-action:none;
 }
 
-/* MODAL */
+/* ================= TOAST ================= */
 
-.modal-bg{
-  position:absolute;
-  inset:0;
-  z-index:120;
-  background:rgba(0,0,0,.6);
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-  backdrop-filter:blur(8px);
-}
-
-.modal-bg.show{
-  display:flex;
-}
-
-.modal{
-  width:min(100%,470px);
-  padding:20px;
-  border-radius:30px 30px 0 0;
-  background:rgba(22,24,29,.94);
-  border:1px solid var(--border);
-  box-shadow:0 -20px 70px rgba(0,0,0,.45);
-}
-
-body.light .modal{
-  background:rgba(245,247,250,.95);
-}
-
-.modal h2{
-  margin:0 0 18px;
-}
-
-.field{
-  margin-bottom:12px;
-}
-
-.field label{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:6px;
-}
-
-.field input,
-.field textarea{
-  width:100%;
-  border:1px solid var(--border);
-  outline:none;
-  border-radius:15px;
-  padding:12px;
-  background:var(--card);
-  color:var(--text);
-}
-
-.field textarea{
-  resize:none;
-}
-
-.modal-actions{
-  display:flex;
-  gap:9px;
-  margin-top:15px;
-}
-
-.modal-actions button{
-  flex:1;
-  height:45px;
-  border-radius:15px;
-  background:var(--card);
-  border:1px solid var(--border);
-}
-
-.modal-actions .save{
-  background:var(--text);
-  color:var(--bg);
-}
-
-/* TOAST */
-
-.toast{
+#toast{
   position:absolute;
   left:50%;
-  bottom:94px;
-  transform:translate(-50%,20px);
-  background:rgba(25,27,32,.92);
-  color:#fff;
+  bottom:95px;
+  transform:translateX(-50%) translateY(20px);
   padding:11px 16px;
   border-radius:15px;
-  font-size:13px;
+  background:rgba(30,30,30,.88);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  font-size:12px;
   opacity:0;
   pointer-events:none;
-  z-index:200;
-  transition:.3s ease;
-  border:1px solid rgba(255,255,255,.12);
+  transition:.3s;
+  z-index:100;
   white-space:nowrap;
 }
 
-.toast.show{
+#toast.show{
   opacity:1;
-  transform:translate(-50%,0);
+  transform:translateX(-50%) translateY(0);
 }
 
-/* SMALL */
+/* ================= LOADING ================= */
 
-@media(max-width:360px){
-  .brand h1{
-    font-size:22px;
+#loading{
+  position:absolute;
+  inset:0;
+  background:#050505;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:12px;
+}
+
+.loader{
+  width:30px;
+  height:30px;
+  border:3px solid rgba(255,255,255,.15);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+  .authBox{
+    padding:23px;
   }
 
-  .chat-drawer{
-    width:96%;
+  .welcome h1{
+    font-size:29px;
   }
+
+  #chatDrawer{
+    width:94vw;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="app">
 
-  <!-- MAIN SHELL -->
-  <div class="shell" id="shell">
+  <!-- LOADING -->
+  <div id="loading">
+    <div class="loader"></div>
+    <div style="color:#777;font-size:12px;">Loading ChatX...</div>
+  </div>
+
+
+  <!-- ================= AUTH ================= -->
+
+  <section id="authPage">
+
+    <div class="authBox glass">
+
+      <div class="logo">ChatX</div>
+
+      <div class="subtitle">
+        Simple. Private. Connected.
+      </div>
+
+      <div id="errorBox"></div>
+
+      <!-- LOGIN -->
+
+      <div id="loginForm">
+
+        <input
+          id="loginEmail"
+          class="input"
+          type="email"
+          placeholder="Email"
+          autocomplete="email">
+
+        <input
+          id="loginPassword"
+          class="input"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password">
+
+        <button class="btn" id="loginBtn">
+          Login
+        </button>
+
+        <div class="authSwitch">
+          Don't have an account?
+          <span id="showSignup">Create Account</span>
+        </div>
+
+      </div>
+
+
+      <!-- SIGNUP -->
+
+      <div id="signupForm" class="hidden">
+
+        <input
+          id="signupUsername"
+          class="input"
+          type="text"
+          placeholder="Username"
+          maxlength="30"
+          autocomplete="username">
+
+        <input
+          id="signupEmail"
+          class="input"
+          type="email"
+          placeholder="Email"
+          autocomplete="email">
+
+        <input
+          id="signupPassword"
+          class="input"
+          type="password"
+          placeholder="Password"
+          autocomplete="new-password">
+
+        <button class="btn" id="signupBtn">
+          Create Account
+        </button>
+
+        <div class="authSwitch">
+          Already have an account?
+          <span id="showLogin">Login</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <div id="mainShell" class="hidden">
+
+    <!-- HEADER -->
 
     <header class="header">
+
       <div class="brand">
-        <div class="logo">CX</div>
-        <h1>ChatX</h1>
+        ChatX
       </div>
 
-      <button class="icon-btn" id="topAction">＋</button>
+      <div class="headerIcon glass" id="headerProfile">
+        ◉
+      </div>
+
     </header>
 
-    <!-- HOME -->
-    <main class="page" id="homePage">
 
-      <div class="search">
-        <span>⌕</span>
-        <input id="searchInput"
-               type="search"
-               placeholder="Search chats">
+    <!-- ================= HOME ================= -->
+
+    <main id="homePage" class="page">
+
+      <div class="welcome">
+        <h1 id="helloText">
+          Hello 👋
+        </h1>
+
+        <p>
+          Find someone and start chatting.
+        </p>
       </div>
 
-      <div class="section-title">
-        <h2>Chats</h2>
-        <span id="chatCount">4 chats</span>
+
+      <input
+        id="searchInput"
+        class="searchBox"
+        type="text"
+        placeholder="Search username...">
+
+
+      <div class="sectionTitle">
+        Users
       </div>
 
-      <div id="chatList">
 
-        <div class="chat-card" data-name="Alex">
-          <div class="avatar">A</div>
-          <div class="chat-info">
-            <div class="chat-name">Alex</div>
-            <div class="chat-preview">Hey! How are you?</div>
-          </div>
-          <div class="chat-time">2:20 PM</div>
-        </div>
+      <div id="userResults"></div>
 
-        <div class="chat-card" data-name="Rahul">
-          <div class="avatar">R</div>
-          <div class="chat-info">
-            <div class="chat-name">Rahul</div>
-            <div class="chat-preview">Bro, check this out 🔥</div>
-          </div>
-          <div class="chat-time">1:45 PM</div>
-        </div>
-
-        <div class="chat-card" data-name="Creative Group">
-          <div class="avatar">CG</div>
-          <div class="chat-info">
-            <div class="chat-name">Creative Group</div>
-            <div class="chat-preview">New project update</div>
-          </div>
-          <div class="chat-time">12:30 PM</div>
-        </div>
-
-        <div class="chat-card" data-name="Mod Team">
-          <div class="avatar">MT</div>
-          <div class="chat-info">
-            <div class="chat-name">Mod Team</div>
-            <div class="chat-preview">File is ready</div>
-          </div>
-          <div class="chat-time">Yesterday</div>
-        </div>
-
-      </div>
     </main>
 
 
-    <!-- PROFILE -->
-    <main class="page hidden" id="profilePage">
+    <!-- ================= PROFILE ================= -->
 
-      <div class="profile-top">
+    <main id="profilePage" class="page hidden">
 
-        <div class="profile-avatar" id="profileAvatar">
-          <span id="avatarLetter">N</span>
+      <div class="profileBox glass">
 
-          <button class="photo-edit" id="photoEdit">
-            ✎
-          </button>
+        <div
+          class="bigAvatar"
+          id="profileAvatar">
+          U
         </div>
 
-        <div class="profile-name" id="profileName">
-          Nikhil
+        <div
+          class="profileName"
+          id="profileUsername">
+          Username
         </div>
 
-        <div class="profile-user" id="profileUsername">
-          @nikhil
+        <div
+          class="profileEmail"
+          id="profileEmail">
+          email
         </div>
 
-        <div class="bio" id="profileBio">
-          Welcome to ChatX
-        </div>
-
-        <div class="online">
-          <span class="online-dot"></span>
-          Online
-        </div>
-
-        <br>
-
-        <button class="primary-btn" id="editProfile">
-          Edit Profile
+        <button
+          class="btn secondary logout"
+          id="logoutBtn">
+          Logout
         </button>
 
       </div>
 
-      <div class="stats">
-        <div class="stat">
-          <strong>0</strong>
-          <span>Posts</span>
-        </div>
-
-        <div class="stat">
-          <strong>0</strong>
-          <span>Friends</span>
-        </div>
-
-        <div class="stat">
-          <strong>0</strong>
-          <span>Media</span>
-        </div>
-      </div>
-
-
-      <div class="setting-card">
-
-        <div class="setting-row" id="accountSetting">
-          <div class="setting-left">
-            <div class="setting-icon">◉</div>
-            <span>Account</span>
-          </div>
-          <span class="setting-arrow">›</span>
-        </div>
-
-        <div class="setting-row" id="appearanceSetting">
-          <div class="setting-left">
-            <div class="setting-icon">◐</div>
-            <span>Appearance</span>
-          </div>
-          <span class="setting-arrow">›</span>
-        </div>
-
-        <div class="setting-row" id="activitySetting">
-          <div class="setting-left">
-            <div class="setting-icon">◷</div>
-            <span>Activity</span>
-          </div>
-          <span class="setting-arrow">›</span>
-        </div>
-
-      </div>
-
-
-      <div class="setting-card">
-
-        <div class="setting-row" id="privacySetting">
-          <div class="setting-left">
-            <div class="setting-icon">⌕</div>
-            <span>Privacy</span>
-          </div>
-          <span class="setting-arrow">›</span>
-        </div>
-
-        <div class="setting-row" id="notificationSetting">
-          <div class="setting-left">
-            <div class="setting-icon">♢</div>
-            <span>Notifications</span>
-          </div>
-          <span class="setting-arrow">›</span>
-        </div>
-
-        <div class="setting-row" id="logoutSetting">
-          <div class="setting-left">
-            <div class="setting-icon">↪</div>
-            <span>Log Out</span>
-          </div>
-          <span class="setting-arrow">›</span>
-        </div>
-
-      </div>
-
     </main>
 
 
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
+    <!-- ================= NAV ================= -->
 
-      <div class="nav-pill" id="navPill"></div>
+    <nav class="bottomNav glass">
 
-      <button class="nav-btn active" data-page="home">
-        <span class="nav-icon">⌂</span>
-        <span>Home</span>
-      </button>
+      <div
+        class="navPill"
+        id="navPill">
+      </div>
 
-      <button class="nav-btn" data-page="chat">
-        <span class="nav-icon">◌</span>
-        <span>Chat</span>
-      </button>
+      <div
+        class="navItem active"
+        data-page="home">
+        Home
+      </div>
 
-      <button class="nav-btn" data-page="profile">
-        <span class="nav-icon">◎</span>
-        <span>Profile</span>
-      </button>
+      <div
+        class="navItem"
+        data-page="chat">
+        Chat
+      </div>
+
+      <div
+        class="navItem"
+        data-page="profile">
+        Profile
+      </div>
 
     </nav>
 
   </div>
 
 
-  <!-- OVERLAY -->
-  <div class="overlay" id="overlay"></div>
+  <!-- ================= CHAT OVERLAY ================= -->
+
+  <div id="chatOverlay"></div>
 
 
-  <!-- CHAT DRAWER -->
-  <aside class="chat-drawer" id="chatDrawer">
+  <!-- ================= CHAT DRAWER ================= -->
 
-    <div class="chat-header">
+  <aside id="chatDrawer">
 
-      <button class="back-btn" id="chatBack">
-        ‹
+    <div class="chatHeader">
+
+      <button
+        class="backBtn"
+        id="closeChatBtn">
+        ←
       </button>
 
-      <div class="avatar" style="width:45px;height:45px;border-radius:15px;">
-        A
+      <div class="avatar" id="chatAvatar">
+        U
       </div>
 
-      <div class="chat-person">
-        <strong>Alex</strong>
-        <span>● Online</span>
-      </div>
+      <div class="chatUser">
 
-      <button class="icon-btn" id="chatMore">
-        ⋯
-      </button>
+        <div
+          class="chatUserName"
+          id="chatUsername">
+          User
+        </div>
+
+        <div class="chatUserStatus">
+          ChatX user
+        </div>
+
+      </div>
 
     </div>
 
 
-    <div class="messages" id="messages">
-
-      <div class="message in">
-        Hey! 👋
-        <span class="msg-time">2:18 PM</span>
-      </div>
-
-      <div class="message in">
-        Welcome to ChatX.
-        <span class="msg-time">2:19 PM</span>
-      </div>
-
-      <div class="message out">
-        This UI looks clean 🔥
-        <span class="msg-time">2:20 PM</span>
-      </div>
-
-    </div>
+    <div id="messages"></div>
 
 
     <div class="composer">
 
-      <button class="attach" id="attachBtn">
-        ＋
-      </button>
-
-      <textarea
+      <input
         id="messageInput"
-        rows="1"
-        placeholder="Message..."
-      ></textarea>
+        class="messageInput"
+        type="text"
+        maxlength="2000"
+        placeholder="Message...">
 
-      <button class="send" id="sendBtn">
+      <button
+        id="sendBtn"
+        class="sendBtn">
         ↑
       </button>
 
@@ -1054,560 +919,1236 @@ body.light .modal{
   </aside>
 
 
-  <!-- RIGHT EDGE SWIPE AREA -->
-  <div class="edge-zone" id="edgeZone"></div>
+  <!-- EDGE SWIPE -->
 
-
-  <!-- FILE INPUTS -->
-  <input
-    type="file"
-    id="mediaInput"
-    accept="image/*,video/*"
-    hidden
-  >
-
-  <input
-    type="file"
-    id="photoInput"
-    accept="image/*"
-    hidden
-  >
-
-
-  <!-- EDIT PROFILE MODAL -->
-  <div class="modal-bg" id="editModal">
-
-    <div class="modal">
-
-      <h2>Edit Profile</h2>
-
-      <div class="field">
-        <label>Name</label>
-        <input id="editName" maxlength="30">
-      </div>
-
-      <div class="field">
-        <label>Username</label>
-        <input id="editUsername"
-               maxlength="20"
-               placeholder="username">
-      </div>
-
-      <div class="field">
-        <label>Bio</label>
-        <textarea id="editBio"
-                  maxlength="120"
-                  rows="3"></textarea>
-      </div>
-
-      <div class="modal-actions">
-        <button id="cancelEdit">
-          Cancel
-        </button>
-
-        <button class="save" id="saveEdit">
-          Save
-        </button>
-      </div>
-
-    </div>
-
-  </div>
+  <div id="edgeZone"></div>
 
 
   <!-- TOAST -->
-  <div class="toast" id="toast"></div>
+
+  <div id="toast"></div>
 
 </div>
 
 
 <script>
 
-/* =========================
-   CHATX APP
-========================= */
+/* =========================================================
+   SUPABASE
+========================================================= */
 
-const shell = document.getElementById("shell");
-const overlay = document.getElementById("overlay");
-const chatDrawer = document.getElementById("chatDrawer");
-const edgeZone = document.getElementById("edgeZone");
-const navPill = document.getElementById("navPill");
+const SUPABASE_URL =
+  "https://ktzlnjehfbjzrqtgwxee.supabase.co";
 
-const homePage = document.getElementById("homePage");
-const profilePage = document.getElementById("profilePage");
+const SUPABASE_KEY =
+  "sb_publishable_sxrL1sGY22smdk3uSd1F1g_wdEngxGA";
 
-const navButtons =
-  document.querySelectorAll(".nav-btn");
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+let currentProfile = null;
+let selectedUser = null;
+
+let realtimeChannel = null;
+
+const renderedMessageIds =
+  new Set();
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loading =
+  document.getElementById("loading");
+
+const authPage =
+  document.getElementById("authPage");
+
+const mainShell =
+  document.getElementById("mainShell");
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const signupForm =
+  document.getElementById("signupForm");
+
+const errorBox =
+  document.getElementById("errorBox");
 
 const searchInput =
   document.getElementById("searchInput");
 
-const chatCards =
-  document.querySelectorAll(".chat-card");
+const userResults =
+  document.getElementById("userResults");
 
-const toast =
-  document.getElementById("toast");
+const chatDrawer =
+  document.getElementById("chatDrawer");
 
+const chatOverlay =
+  document.getElementById("chatOverlay");
 
-/* =========================
-   PROFILE STORAGE
-========================= */
-
-const defaultProfile = {
-  name:"Nikhil",
-  username:"nikhil",
-  bio:"Welcome to ChatX",
-  photo:""
-};
-
-let profile =
-  JSON.parse(
-    localStorage.getItem("chatxProfile")
-  ) || defaultProfile;
-
-
-/* =========================
-   TOAST
-========================= */
-
-let toastTimer;
-
-function showToast(message){
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },2200);
-}
-
-
-/* =========================
-   PROFILE RENDER
-========================= */
-
-function renderProfile(){
-
-  document.getElementById("profileName")
-    .textContent = profile.name;
-
-  document.getElementById("profileUsername")
-    .textContent = "@" + profile.username;
-
-  document.getElementById("profileBio")
-    .textContent = profile.bio || "Welcome to ChatX";
-
-  const avatar =
-    document.getElementById("profileAvatar");
-
-  const letter =
-    document.getElementById("avatarLetter");
-
-  if(profile.photo){
-
-    let oldImg =
-      avatar.querySelector("img");
-
-    if(!oldImg){
-
-      oldImg =
-        document.createElement("img");
-
-      avatar.prepend(oldImg);
-    }
-
-    oldImg.src = profile.photo;
-
-    letter.style.display = "none";
-
-  }else{
-
-    const oldImg =
-      avatar.querySelector("img");
-
-    if(oldImg) oldImg.remove();
-
-    letter.style.display = "block";
-
-    letter.textContent =
-      (profile.name || "N")
-      .charAt(0)
-      .toUpperCase();
-  }
-}
-
-renderProfile();
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-function moveNavPill(index){
-
-  navPill.style.transform =
-    `translateX(${index * 100}%)`;
-}
-
-function showPage(page){
-
-  if(page === "home"){
-
-    homePage.classList.remove("hidden");
-    profilePage.classList.add("hidden");
-
-    moveNavPill(0);
-
-  }
-
-  else if(page === "profile"){
-
-    homePage.classList.add("hidden");
-    profilePage.classList.remove("hidden");
-
-    moveNavPill(2);
-
-  }
-
-  else if(page === "chat"){
-
-    showToast(
-      "Swipe from the right edge to open Chat"
-    );
-
-    return;
-  }
-
-  navButtons.forEach(btn=>{
-    btn.classList.toggle(
-      "active",
-      btn.dataset.page === page
-    );
-  });
-}
-
-
-navButtons.forEach((btn)=>{
-
-  btn.addEventListener("click",()=>{
-
-    const page =
-      btn.dataset.page;
-
-    showPage(page);
-
-  });
-
-});
-
-
-/* =========================
-   CHAT DRAWER
-========================= */
-
-function openChat(){
-
-  chatDrawer.style.transition =
-    "transform .48s cubic-bezier(.22,1,.36,1)";
-
-  chatDrawer.style.transform =
-    "translateX(0)";
-
-  chatDrawer.classList.add("open");
-
-  shell.classList.add("shrink");
-
-  overlay.classList.add("show");
-
-  document.body.style.overflow = "hidden";
-}
-
-
-function closeChat(){
-
-  chatDrawer.style.transition =
-    "transform .48s cubic-bezier(.22,1,.36,1)";
-
-  chatDrawer.style.transform =
-    "translateX(105%)";
-
-  chatDrawer.classList.remove("open");
-
-  shell.classList.remove("shrink");
-
-  overlay.classList.remove("show");
-
-  setTimeout(()=>{
-
-    chatDrawer.style.transform = "";
-
-  },500);
-
-  document.body.style.overflow = "";
-}
-
-
-document.getElementById("chatBack")
-  .addEventListener("click",closeChat);
-
-overlay.addEventListener(
-  "click",
-  closeChat
-);
-
-
-/* =========================
-   RIGHT EDGE SWIPE OPEN
-========================= */
-
-let edgeStartX = 0;
-let edgeStartY = 0;
-let edgeTracking = false;
-
-edgeZone.addEventListener(
-  "pointerdown",
-  e=>{
-
-    edgeStartX = e.clientX;
-    edgeStartY = e.clientY;
-
-    edgeTracking = true;
-
-    edgeZone.setPointerCapture(e.pointerId);
-
-  }
-);
-
-edgeZone.addEventListener(
-  "pointermove",
-  e=>{
-
-    if(!edgeTracking) return;
-
-    const dx =
-      e.clientX - edgeStartX;
-
-    const dy =
-      e.clientY - edgeStartY;
-
-    if(
-      dx < -45 &&
-      Math.abs(dx) > Math.abs(dy) * 1.15
-    ){
-
-      edgeTracking = false;
-
-      openChat();
-
-    }
-
-  }
-);
-
-edgeZone.addEventListener(
-  "pointerup",
-  ()=>{
-    edgeTracking = false;
-  }
-);
-
-edgeZone.addEventListener(
-  "pointercancel",
-  ()=>{
-    edgeTracking = false;
-  }
-);
-
-
-/* =========================
-   DRAWER RIGHT SWIPE CLOSE
-========================= */
-
-let drawerStartX = 0;
-let drawerStartY = 0;
-let drawerTracking = false;
-
-chatDrawer.addEventListener(
-  "pointerdown",
-  e=>{
-
-    const tag =
-      e.target.tagName.toLowerCase();
-
-    if(
-      tag === "button" ||
-      tag === "textarea" ||
-      tag === "input"
-    ){
-      return;
-    }
-
-    drawerStartX = e.clientX;
-    drawerStartY = e.clientY;
-
-    drawerTracking = true;
-
-  }
-);
-
-chatDrawer.addEventListener(
-  "pointermove",
-  e=>{
-
-    if(!drawerTracking) return;
-
-    const dx =
-      e.clientX - drawerStartX;
-
-    const dy =
-      e.clientY - drawerStartY;
-
-    if(
-      dx > 45 &&
-      Math.abs(dx) > Math.abs(dy) * 1.15
-    ){
-
-      drawerTracking = false;
-
-      closeChat();
-
-    }
-
-  }
-);
-
-chatDrawer.addEventListener(
-  "pointerup",
-  ()=>{
-    drawerTracking = false;
-  }
-);
-
-chatDrawer.addEventListener(
-  "pointercancel",
-  ()=>{
-    drawerTracking = false;
-  }
-);
-
-
-/* =========================
-   SEARCH
-========================= */
-
-searchInput.addEventListener(
-  "input",
-  ()=>{
-
-    const query =
-      searchInput.value
-        .toLowerCase()
-        .trim();
-
-    let visible = 0;
-
-    chatCards.forEach(card=>{
-
-      const name =
-        card.dataset.name.toLowerCase();
-
-      const text =
-        card.textContent.toLowerCase();
-
-      const match =
-        name.includes(query) ||
-        text.includes(query);
-
-      card.style.display =
-        match ? "flex" : "none";
-
-      if(match) visible++;
-
-    });
-
-    document.getElementById("chatCount")
-      .textContent =
-      visible + " chats";
-
-  }
-);
-
-
-/* =========================
-   SEND MESSAGE
-========================= */
-
-const messageInput =
-  document.getElementById("messageInput");
+const edgeZone =
+  document.getElementById("edgeZone");
 
 const messages =
   document.getElementById("messages");
 
-function sendMessage(){
+const messageInput =
+  document.getElementById("messageInput");
 
-  const text =
-    messageInput.value.trim();
+const sendBtn =
+  document.getElementById("sendBtn");
 
-  if(!text) return;
+const toast =
+  document.getElementById("toast");
 
-  const message =
-    document.createElement("div");
+const navPill =
+  document.getElementById("navPill");
 
-  message.className =
-    "message out";
 
-  message.textContent = text;
+/* =========================================================
+   HELPERS
+========================================================= */
 
-  const time =
-    document.createElement("span");
+function showError(message){
 
-  time.className =
-    "msg-time";
+  errorBox.textContent =
+    message;
 
-  time.textContent =
-    new Date().toLocaleTimeString(
+  errorBox.style.display =
+    "block";
+}
+
+
+function clearError(){
+
+  errorBox.textContent =
+    "";
+
+  errorBox.style.display =
+    "none";
+}
+
+
+function showToast(message){
+
+  toast.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(
+    showToast.timer
+  );
+
+  showToast.timer =
+    setTimeout(() => {
+
+      toast.classList.remove("show");
+
+    },2200);
+}
+
+
+function getInitial(name){
+
+  return (
+    name?.trim()?.charAt(0)?.toUpperCase()
+    || "U"
+  );
+}
+
+
+function escapeTime(date){
+
+  return new Date(date)
+    .toLocaleTimeString(
       [],
       {
         hour:"2-digit",
         minute:"2-digit"
       }
     );
+}
 
-  message.appendChild(time);
 
-  messages.appendChild(message);
+/* =========================================================
+   AUTH FORM SWITCH
+========================================================= */
 
-  messageInput.value = "";
+document
+  .getElementById("showSignup")
+  .addEventListener("click",() => {
 
-  messageInput.style.height = "43px";
+    clearError();
 
-  messages.scrollTop =
-    messages.scrollHeight;
+    loginForm.classList.add("hidden");
+    signupForm.classList.remove("hidden");
+
+  });
+
+
+document
+  .getElementById("showLogin")
+  .addEventListener("click",() => {
+
+    clearError();
+
+    signupForm.classList.add("hidden");
+    loginForm.classList.remove("hidden");
+
+  });
+
+
+/* =========================================================
+   SAVE PROFILE
+========================================================= */
+
+async function saveProfile(user,username){
+
+  const clean =
+    username.trim();
+
+  if(!clean){
+    return;
+  }
+
+  const {error} =
+    await db
+      .from("profiles")
+      .upsert(
+        {
+          id:user.id,
+          username:clean
+        },
+        {
+          onConflict:"id"
+        }
+      );
+
+  if(error){
+
+    console.error(
+      "Profile save error:",
+      error
+    );
+
+  }
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
+
+async function loadProfile(user){
+
+  const {data,error} =
+    await db
+      .from("profiles")
+      .select("id,username")
+      .eq("id",user.id)
+      .maybeSingle();
+
+  if(error){
+
+    console.error(
+      "Profile load error:",
+      error
+    );
+
+  }
+
+  if(data){
+
+    currentProfile =
+      data;
+
+    return data;
+  }
+
+
+  const metadataUsername =
+    user.user_metadata?.username
+    || "User";
+
+
+  await saveProfile(
+    user,
+    metadataUsername
+  );
+
+
+  currentProfile = {
+    id:user.id,
+    username:metadataUsername
+  };
+
+
+  return currentProfile;
+}
+
+
+/* =========================================================
+   SIGN UP
+========================================================= */
+
+async function handleSignup(){
+
+  clearError();
+
+  const username =
+    document
+      .getElementById("signupUsername")
+      .value
+      .trim();
+
+  const email =
+    document
+      .getElementById("signupEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("signupPassword")
+      .value;
+
+
+  if(!username){
+
+    showError(
+      "Please enter a username."
+    );
+
+    return;
+  }
+
+
+  if(username.length < 3){
+
+    showError(
+      "Username must be at least 3 characters."
+    );
+
+    return;
+  }
+
+
+  if(!email){
+
+    showError(
+      "Please enter your email."
+    );
+
+    return;
+  }
+
+
+  if(password.length < 6){
+
+    showError(
+      "Password must be at least 6 characters."
+    );
+
+    return;
+  }
+
+
+  const {data,error} =
+    await db.auth.signUp({
+
+      email,
+      password,
+
+      options:{
+        data:{
+          username
+        }
+      }
+
+    });
+
+
+  if(error){
+
+    showError(
+      error.message
+    );
+
+    return;
+  }
+
+
+  if(data.user){
+
+    if(data.session){
+
+      await saveProfile(
+        data.user,
+        username
+      );
+
+      showToast(
+        "Account created!"
+      );
+
+    }else{
+
+      showToast(
+        "Check your email to confirm your account."
+      );
+
+    }
+
+  }
 
 }
 
 
-document.getElementById("sendBtn")
+/* =========================================================
+   LOGIN
+========================================================= */
+
+async function handleLogin(){
+
+  clearError();
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+
+  if(!email || !password){
+
+    showError(
+      "Enter email and password."
+    );
+
+    return;
+  }
+
+
+  const {data,error} =
+    await db.auth.signInWithPassword({
+
+      email,
+      password
+
+    });
+
+
+  if(error){
+
+    showError(
+      error.message
+    );
+
+    return;
+  }
+
+
+  if(data.user){
+
+    await enterApp(
+      data.user
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SESSION
+========================================================= */
+
+async function checkSession(){
+
+  const {data,error} =
+    await db.auth.getSession();
+
+  if(error){
+
+    console.error(error);
+
+  }
+
+
+  if(data.session?.user){
+
+    await enterApp(
+      data.session.user
+    );
+
+  }else{
+
+    showAuth();
+
+  }
+
+}
+
+
+async function enterApp(user){
+
+  currentUser =
+    user;
+
+  await loadProfile(
+    user
+  );
+
+
+  authPage.classList.add(
+    "hidden"
+  );
+
+  mainShell.classList.remove(
+    "hidden"
+  );
+
+  loading.classList.add(
+    "hidden"
+  );
+
+
+  updateProfileUI();
+
+  showPage("home");
+
+}
+
+
+function showAuth(){
+
+  loading.classList.add(
+    "hidden"
+  );
+
+  mainShell.classList.add(
+    "hidden"
+  );
+
+  authPage.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* =========================================================
+   PROFILE UI
+========================================================= */
+
+function updateProfileUI(){
+
+  const username =
+    currentProfile?.username
+    || "User";
+
+
+  document
+    .getElementById("helloText")
+    .textContent =
+      "Hello, " + username + " 👋";
+
+
+  document
+    .getElementById("profileUsername")
+    .textContent =
+      username;
+
+
+  document
+    .getElementById("profileEmail")
+    .textContent =
+      currentUser?.email
+      || "";
+
+
+  document
+    .getElementById("profileAvatar")
+    .textContent =
+      getInitial(username);
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(page){
+
+  document
+    .getElementById("homePage")
+    .classList.add("hidden");
+
+  document
+    .getElementById("profilePage")
+    .classList.add("hidden");
+
+
+  if(page === "home"){
+
+    document
+      .getElementById("homePage")
+      .classList.remove("hidden");
+
+    navPill.style.transform =
+      "translateX(0%)";
+
+  }
+
+
+  if(page === "profile"){
+
+    document
+      .getElementById("profilePage")
+      .classList.remove("hidden");
+
+    navPill.style.transform =
+      "translateX(200%)";
+
+  }
+
+
+  document
+    .querySelectorAll(".navItem")
+    .forEach(item => {
+
+      item.classList.toggle(
+        "active",
+        item.dataset.page === page
+      );
+
+    });
+
+
+  if(page === "chat"){
+
+    showToast(
+      selectedUser
+        ? "Swipe from right edge ← to open chat"
+        : "Search a user first"
+    );
+
+  }
+
+}
+
+
+document
+  .querySelectorAll(".navItem")
+  .forEach(item => {
+
+    item.addEventListener(
+      "click",
+      () => {
+
+        const page =
+          item.dataset.page;
+
+        if(page === "chat"){
+
+          showToast(
+            selectedUser
+              ? "Swipe from right edge ← to open chat"
+              : "Search a user first"
+          );
+
+          return;
+        }
+
+        showPage(page);
+
+      }
+    );
+
+  });
+
+
+document
+  .getElementById("headerProfile")
   .addEventListener(
     "click",
-    sendMessage
+    () => showPage("profile")
   );
+
+
+/* =========================================================
+   USER SEARCH
+========================================================= */
+
+let searchTimer = null;
+
+
+searchInput
+  .addEventListener(
+    "input",
+    () => {
+
+      clearTimeout(
+        searchTimer
+      );
+
+      searchTimer =
+        setTimeout(
+          searchUsers,
+          250
+        );
+
+    }
+  );
+
+
+async function searchUsers(){
+
+  const query =
+    searchInput.value.trim();
+
+
+  userResults.innerHTML =
+    "";
+
+
+  if(!query){
+
+    return;
+  }
+
+
+  if(!currentUser){
+
+    return;
+  }
+
+
+  const {data,error} =
+    await db
+      .from("profiles")
+      .select(
+        "id,username"
+      )
+      .ilike(
+        "username",
+        `%${query}%`
+      )
+      .neq(
+        "id",
+        currentUser.id
+      )
+      .limit(20);
+
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Search failed"
+    );
+
+    return;
+  }
+
+
+  if(!data?.length){
+
+    userResults.innerHTML = `
+      <div style="
+        text-align:center;
+        color:#666;
+        padding:30px;
+        font-size:13px;
+      ">
+        No users found
+      </div>
+    `;
+
+    return;
+  }
+
+
+  data.forEach(user => {
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+    card.className =
+      "userCard glass";
+
+    card.style.pointerEvents =
+      "auto";
+
+
+    card.innerHTML = `
+      <div class="avatar">
+        ${getInitial(user.username)}
+      </div>
+
+      <div class="userInfo">
+
+        <div class="username">
+          ${escapeHTML(user.username)}
+        </div>
+
+        <div class="userStatus">
+          ChatX user
+        </div>
+
+      </div>
+    `;
+
+
+    card.addEventListener(
+      "click",
+      () => {
+
+        selectUser(user);
+
+      }
+    );
+
+
+    userResults.appendChild(
+      card
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
+   SELECT USER
+========================================================= */
+
+function selectUser(user){
+
+  selectedUser =
+    user;
+
+
+  document
+    .getElementById("chatUsername")
+    .textContent =
+      user.username;
+
+
+  document
+    .getElementById("chatAvatar")
+    .textContent =
+      getInitial(
+        user.username
+      );
+
+
+  showToast(
+    "User selected — swipe from right edge →"
+  );
+
+}
+
+
+/* =========================================================
+   OPEN CHAT
+========================================================= */
+
+async function openChat(){
+
+  if(!selectedUser){
+
+    showToast(
+      "Search and select a user first"
+    );
+
+    return;
+  }
+
+
+  chatDrawer.classList.add(
+    "open"
+  );
+
+  chatOverlay.classList.add(
+    "open"
+  );
+
+  mainShell.classList.add(
+    "chatOpen"
+  );
+
+
+  edgeZone.style.pointerEvents =
+    "none";
+
+
+  await loadConversation();
+
+}
+
+
+/* =========================================================
+   CLOSE CHAT
+========================================================= */
+
+function closeChat(){
+
+  chatDrawer.classList.remove(
+    "open"
+  );
+
+  chatOverlay.classList.remove(
+    "open"
+  );
+
+  mainShell.classList.remove(
+    "chatOpen"
+  );
+
+
+  edgeZone.style.pointerEvents =
+    "auto";
+
+
+  resetDrawerGesture();
+
+}
+
+
+/* =========================================================
+   CHAT BUTTONS
+========================================================= */
+
+document
+  .getElementById("closeChatBtn")
+  .addEventListener(
+    "click",
+    closeChat
+  );
+
+
+chatOverlay
+  .addEventListener(
+    "click",
+    closeChat
+  );
+
+
+/* =========================================================
+   LOAD CONVERSATION
+========================================================= */
+
+async function loadConversation(){
+
+  if(!currentUser ||
+     !selectedUser){
+
+    return;
+  }
+
+
+  messages.innerHTML =
+    "";
+
+  renderedMessageIds.clear();
+
+
+  if(realtimeChannel){
+
+    await db.removeChannel(
+      realtimeChannel
+    );
+
+    realtimeChannel =
+      null;
+  }
+
+
+  const filter =
+    `and(sender_id.eq.${currentUser.id},receiver_id.eq.${selectedUser.id}),and(sender_id.eq.${selectedUser.id},receiver_id.eq.${currentUser.id})`;
+
+
+  const {data,error} =
+    await db
+      .from("messages")
+      .select(
+        "id,sender_id,receiver_id,content,created_at"
+      )
+      .or(filter)
+      .order(
+        "created_at",
+        {
+          ascending:true
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    showToast(
+      "Could not load messages"
+    );
+
+    return;
+  }
+
+
+  data?.forEach(
+    renderMessage
+  );
+
+
+  scrollMessages();
+
+
+  subscribeRealtime();
+
+}
+
+
+/* =========================================================
+   RENDER MESSAGE
+========================================================= */
+
+function renderMessage(message){
+
+  if(!message?.id){
+
+    return;
+  }
+
+
+  if(
+    renderedMessageIds
+      .has(message.id)
+  ){
+
+    return;
+  }
+
+
+  renderedMessageIds.add(
+    message.id
+  );
+
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+
+  const mine =
+    message.sender_id ===
+    currentUser.id;
+
+
+  wrapper.className =
+    "message " +
+    (mine
+      ? "mine"
+      : "theirs");
+
+
+  const content =
+    document.createElement(
+      "div"
+    );
+
+  content.textContent =
+    message.content;
+
+
+  const time =
+    document.createElement(
+      "div"
+    );
+
+  time.className =
+    "messageTime";
+
+  time.textContent =
+    escapeTime(
+      message.created_at
+    );
+
+
+  wrapper.appendChild(
+    content
+  );
+
+  wrapper.appendChild(
+    time
+  );
+
+
+  messages.appendChild(
+    wrapper
+  );
+
+
+  scrollMessages();
+
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollMessages(){
+
+  requestAnimationFrame(
+    () => {
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage(){
+
+  if(
+    !currentUser ||
+    !selectedUser
+  ){
+
+    return;
+  }
+
+
+  const text =
+    messageInput.value.trim();
+
+
+  if(!text){
+
+    return;
+  }
+
+
+  messageInput.value =
+    "";
+
+
+  const {data,error} =
+    await db
+      .from("messages")
+      .insert({
+
+        sender_id:
+          currentUser.id,
+
+        receiver_id:
+          selectedUser.id,
+
+        content:
+          text
+
+      })
+      .select(
+        "id,sender_id,receiver_id,content,created_at"
+      )
+      .single();
+
+
+  if(error){
+
+    console.error(
+      "Send error:",
+      error
+    );
+
+    messageInput.value =
+      text;
+
+    showToast(
+      "Message failed to send"
+    );
+
+    return;
+  }
+
+
+  if(data){
+
+    renderMessage(
+      data
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SEND BUTTON
+========================================================= */
+
+sendBtn.addEventListener(
+  "click",
+  sendMessage
+);
 
 
 messageInput.addEventListener(
   "keydown",
-  e=>{
+  event => {
 
     if(
-      e.key === "Enter" &&
-      !e.shiftKey
+      event.key === "Enter" &&
+      !event.shiftKey
     ){
 
-      e.preventDefault();
+      event.preventDefault();
 
       sendMessage();
 
@@ -1617,359 +2158,153 @@ messageInput.addEventListener(
 );
 
 
-messageInput.addEventListener(
-  "input",
-  ()=>{
+/* =========================================================
+   REALTIME
+========================================================= */
 
-    messageInput.style.height =
-      "43px";
+function subscribeRealtime(){
 
-    messageInput.style.height =
-      Math.min(
-        messageInput.scrollHeight,
-        110
-      ) + "px";
+  if(
+    !currentUser ||
+    !selectedUser
+  ){
 
+    return;
   }
-);
 
 
-/* =========================
-   ATTACHMENT
-========================= */
+  const myId =
+    currentUser.id;
 
-const mediaInput =
-  document.getElementById("mediaInput");
-
-document.getElementById("attachBtn")
-  .addEventListener(
-    "click",
-    ()=>{
-      mediaInput.click();
-    }
-  );
-
-mediaInput.addEventListener(
-  "change",
-  ()=>{
-
-    if(!mediaInput.files.length)
-      return;
-
-    const file =
-      mediaInput.files[0];
-
-    showToast(
-      file.name + " selected"
-    );
-
-    mediaInput.value = "";
-
-  }
-);
+  const otherId =
+    selectedUser.id;
 
 
-/* =========================
-   PROFILE PHOTO
-========================= */
+  realtimeChannel =
+    db
+      .channel(
+        `chat-${myId}-${otherId}-${Date.now()}`
+      )
+      .on(
+        "postgres_changes",
+        {
+          event:"INSERT",
+          schema:"public",
+          table:"messages"
+        },
+        payload => {
 
-const photoInput =
-  document.getElementById("photoInput");
-
-document.getElementById("photoEdit")
-  .addEventListener(
-    "click",
-    ()=>{
-      photoInput.click();
-    }
-  );
+          const message =
+            payload.new;
 
 
-photoInput.addEventListener(
-  "change",
-  ()=>{
+          const belongsToChat =
+            (
+              message.sender_id === myId &&
+              message.receiver_id === otherId
+            )
+            ||
+            (
+              message.sender_id === otherId &&
+              message.receiver_id === myId
+            );
 
-    const file =
-      photoInput.files[0];
 
-    if(!file) return;
+          if(
+            belongsToChat
+          ){
 
-    if(!file.type.startsWith("image/")){
+            renderMessage(
+              message
+            );
 
-      showToast("Please select an image");
+          }
 
-      return;
-    }
+        }
+      )
+      .subscribe(
+        status => {
 
-    const reader =
-      new FileReader();
+          console.log(
+            "Realtime:",
+            status
+          );
 
-    reader.onload = ()=>{
-
-      profile.photo =
-        reader.result;
-
-      localStorage.setItem(
-        "chatxProfile",
-        JSON.stringify(profile)
+        }
       );
-
-      renderProfile();
-
-      showToast(
-        "Profile photo updated"
-      );
-
-    };
-
-    reader.readAsDataURL(file);
-
-  }
-);
-
-
-/* =========================
-   EDIT PROFILE
-========================= */
-
-const editModal =
-  document.getElementById("editModal");
-
-document.getElementById("editProfile")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      document.getElementById("editName")
-        .value = profile.name;
-
-      document.getElementById("editUsername")
-        .value = profile.username;
-
-      document.getElementById("editBio")
-        .value = profile.bio;
-
-      editModal.classList.add("show");
-
-    }
-  );
-
-
-document.getElementById("cancelEdit")
-  .addEventListener(
-    "click",
-    ()=>{
-      editModal.classList.remove("show");
-    }
-  );
-
-
-document.getElementById("saveEdit")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      const name =
-        document.getElementById("editName")
-          .value.trim();
-
-      const username =
-        document.getElementById("editUsername")
-          .value.trim();
-
-      const bio =
-        document.getElementById("editBio")
-          .value.trim();
-
-
-      if(!name){
-
-        showToast("Enter your name");
-
-        return;
-      }
-
-
-      if(
-        !/^[A-Za-z0-9_]{3,20}$/
-          .test(username)
-      ){
-
-        showToast(
-          "Username: 3-20 letters, numbers or _"
-        );
-
-        return;
-      }
-
-
-      profile.name =
-        name;
-
-      profile.username =
-        username;
-
-      profile.bio =
-        bio;
-
-
-      localStorage.setItem(
-        "chatxProfile",
-        JSON.stringify(profile)
-      );
-
-
-      renderProfile();
-
-      editModal.classList.remove("show");
-
-      showToast(
-        "Profile updated"
-      );
-
-    }
-  );
-
-
-/* =========================
-   APPEARANCE
-========================= */
-
-document.getElementById("appearanceSetting")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      document.body.classList.toggle("light");
-
-      const light =
-        document.body.classList.contains("light");
-
-      localStorage.setItem(
-        "chatxTheme",
-        light ? "light" : "dark"
-      );
-
-      showToast(
-        light
-          ? "Light mode enabled"
-          : "Dark mode enabled"
-      );
-
-    }
-  );
-
-
-if(
-  localStorage.getItem("chatxTheme")
-  === "light"
-){
-
-  document.body.classList.add("light");
 
 }
 
 
-/* =========================
-   OTHER SETTINGS
-========================= */
+/* =========================================================
+   RIGHT EDGE SWIPE OPEN
+========================================================= */
 
-document.getElementById("accountSetting")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast("Account settings coming soon");
+let edgeStartX = 0;
+let edgeStartY = 0;
+let edgeTracking = false;
+
+
+edgeZone.addEventListener(
+  "pointerdown",
+  event => {
+
+    if(
+      chatDrawer.classList.contains(
+        "open"
+      )
+    ){
+
+      return;
     }
-  );
 
 
-document.getElementById("activitySetting")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast("Activity coming soon");
+    edgeTracking = true;
+
+    edgeStartX =
+      event.clientX;
+
+    edgeStartY =
+      event.clientY;
+
+
+    edgeZone.setPointerCapture(
+      event.pointerId
+    );
+
+  }
+);
+
+
+edgeZone.addEventListener(
+  "pointerup",
+  event => {
+
+    if(!edgeTracking){
+
+      return;
     }
-  );
 
 
-document.getElementById("privacySetting")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast("Privacy settings coming soon");
-    }
-  );
+    edgeTracking = false;
 
 
-document.getElementById("notificationSetting")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast("Notifications coming soon");
-    }
-  );
+    const dx =
+      event.clientX -
+      edgeStartX;
+
+    const dy =
+      event.clientY -
+      edgeStartY;
 
 
-document.getElementById("topAction")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast("New chat coming soon");
-    }
-  );
+    if(
+      dx < -55 &&
+      Math.abs(dx) >
+      Math.abs(dy)
+    ){
 
-
-document.getElementById("chatMore")
-  .addEventListener(
-    "click",
-    ()=>{
-      showToast("Chat options");
-    }
-  );
-
-
-document.getElementById("logoutSetting")
-  .addEventListener(
-    "click",
-    ()=>{
-
-      localStorage.removeItem(
-        "chatxSession"
-      );
-
-      showToast(
-        "Logged out from this device"
-      );
-
-    }
-  );
-
-
-/* =========================
-   ESCAPE
-========================= */
-
-document.addEventListener(
-  "keydown",
-  e=>{
-
-    if(e.key === "Escape"){
-
-      if(
-        editModal.classList.contains("show")
-      ){
-
-        editModal.classList.remove("show");
-
-      }
-
-      if(
-        chatDrawer.classList.contains("open")
-      ){
-
-        closeChat();
-
-      }
+      openChat();
 
     }
 
@@ -1977,15 +2312,200 @@ document.addEventListener(
 );
 
 
-/* =========================
-   START
-========================= */
+/* =========================================================
+   CHAT DRAWER SWIPE CLOSE
+========================================================= */
 
-showPage("home");
+let drawerStartX = 0;
+let drawerStartY = 0;
+let drawerTracking = false;
 
-console.log(
-  "ChatX loaded successfully."
+
+chatDrawer.addEventListener(
+  "pointerdown",
+  event => {
+
+    if(
+      event.target.closest(
+        "input,button"
+      )
+    ){
+
+      return;
+    }
+
+
+    drawerTracking = true;
+
+    drawerStartX =
+      event.clientX;
+
+    drawerStartY =
+      event.clientY;
+
+    chatDrawer.style.transition =
+      "none";
+
+  }
 );
+
+
+chatDrawer.addEventListener(
+  "pointerup",
+  event => {
+
+    if(!drawerTracking){
+
+      return;
+    }
+
+
+    drawerTracking = false;
+
+
+    const dx =
+      event.clientX -
+      drawerStartX;
+
+    const dy =
+      event.clientY -
+      drawerStartY;
+
+
+    chatDrawer.style.transition =
+      "";
+
+
+    if(
+      dx > 90 &&
+      Math.abs(dx) >
+      Math.abs(dy)
+    ){
+
+      closeChat();
+
+    }
+
+  }
+);
+
+
+function resetDrawerGesture(){
+
+  chatDrawer.style.transform =
+    "";
+
+  chatDrawer.style.transition =
+    "";
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      closeChat();
+
+
+      if(realtimeChannel){
+
+        await db.removeChannel(
+          realtimeChannel
+        );
+
+        realtimeChannel =
+          null;
+
+      }
+
+
+      await db.auth.signOut();
+
+
+      currentUser =
+        null;
+
+      currentProfile =
+        null;
+
+      selectedUser =
+        null;
+
+
+      showAuth();
+
+    }
+  );
+
+
+/* =========================================================
+   AUTH BUTTONS
+========================================================= */
+
+document
+  .getElementById("loginBtn")
+  .addEventListener(
+    "click",
+    handleLogin
+  );
+
+
+document
+  .getElementById("signupBtn")
+  .addEventListener(
+    "click",
+    handleSignup
+  );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+db.auth.onAuthStateChange(
+  async (event,session) => {
+
+    console.log(
+      "Auth:",
+      event
+    );
+
+    if(
+      event === "SIGNED_IN" &&
+      session?.user
+    ){
+
+      await enterApp(
+        session.user
+      );
+
+    }
+
+
+    if(
+      event === "SIGNED_OUT"
+    ){
+
+      showAuth();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   START
+========================================================= */
+
+checkSession();
 
 </script>
 
